@@ -1,3 +1,4 @@
 略称,Year,Paper URL,Website URL,Challenge Tag,Sub-Challeng Tag,How to Solve,Training Type,Dataset,Evaluation
 VLA-Example,2024,https://example.com/paper.pdf,https://example.com,Representation,Perception,Multi-modal Fusion,Supervised,Example Dataset,Success Rate
 OTTER,2021,https://arxiv.org/pdf/2503.03734?,null,Multi-Modal Fusion and Physical World Representation,The GAP between Sematics Perception and Physical Interation,introdues a text-aware feature extraction which preserves semantics aligned with task description,BC,MIMIC-IT (MultI-Modal In-Context Instruction Tuning),POPE MSRVTT-QA																
+LIV,2023,https://proceedings.mlr.press/v202/ma23b/ma23b.pdf,null,Multi-Modal Fusion and Physical World Representation,The GAP between Sematics, Perception, and Physical Interation,introdues a contrastive framework on robot-control data to construct a joint vision–language embeddingspace,RL,Hopper-v2, HalfCheetah-v2, Walker2d-v2,MuJoCo Environment																
