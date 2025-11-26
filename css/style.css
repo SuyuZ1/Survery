@@ -202,6 +202,16 @@ a:hover {
 .tag-domain-game { background-color: #d35400; color: white; }
 .tag-domain-meta { background-color: #7f8c8d; color: white; }
 
+/* Challenge Tag colors - exact mapping from user spec */
+.tag-challenge-fusion { background-color: #efe00d; color: #000; }
+.tag-challenge-execution { background-color: #e59f52; color: #000; }
+.tag-challenge-generalization { background-color: #d4d4d4; color: #000; }
+.tag-challenge-security { background-color: #7aa4c9; color: #000; }
+.tag-challenge-dataset { background-color: #b3e5a3; color: #000; }
+
+/* Dataset and Evaluation colors - single neutral color */
+.tag-dataset-eval { background-color: #ECEFF1; color: #37474F; }
+
 /* Search highlight */
 mark {
     background-color: #ffeb3b;

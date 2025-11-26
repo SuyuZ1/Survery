@@ -5,14 +5,14 @@ let recordsPerPage = 10;
 let sortColumn = null;
 let sortDirection = 'asc';
 
-// CSV 파일 로드 - Jekyll 환경에 맞게 수정
+// Load CSV file
 async function loadCSV() {
     try {
-        // CSV 파일 경로 설정
+        // Set CSV file path
         const response = await fetch('data/vla_data.csv');
         const text = await response.text();
         
-        // Papa Parse로 CSV 파싱
+        // Parse CSV with Papa Parse
         const result = Papa.parse(text, {
             header: true,
             skipEmptyLines: true,
@@ -25,26 +25,14 @@ async function loadCSV() {
         
         allData = result.data;
         
-        // 카테고리 우선순위에 따라 정렬
-        const categoryOrder = ['Review', 'End-to-End', '3D', 'Planning', 'Policy', 'Special'];
+        // Filter out any empty rows that might have been created
+        allData = allData.filter(row => row['略称'] && row['略称'].trim() !== '');
+        
+        // Sort by Year (newest first) as default
         allData.sort((a, b) => {
-            const aCat = (a['カテゴリ'] || '').split(',')[0].trim();
-            const bCat = (b['カテゴリ'] || '').split(',')[0].trim();
-            
-            const aIndex = categoryOrder.indexOf(aCat);
-            const bIndex = categoryOrder.indexOf(bCat);
-            
-            // 우선순위에 있는 카테고리가 먼저 오도록
-            if (aIndex !== -1 && bIndex !== -1) {
-                return aIndex - bIndex;
-            } else if (aIndex !== -1) {
-                return -1;
-            } else if (bIndex !== -1) {
-                return 1;
-            }
-            
-            // 우선순위에 없는 카테고리는 알파벳 순
-            return aCat.localeCompare(bCat);
+            const yearA = parseInt(a['Year'] || 0);
+            const yearB = parseInt(b['Year'] || 0);
+            return yearB - yearA; // Descending order (newest first)
         });
         
         filteredData = [...allData];
@@ -59,24 +47,23 @@ async function loadCSV() {
     }
 }
 
-// 필터 옵션 채우기
+// Populate filter options
 function populateFilters() {
     const uniqueValues = (field) => {
+        const separator = (field === 'Challenge Tag' || field === 'Sub-Challeng Tag' || field === 'Dataset' || field === 'Evaluation') ? /;/ : /,/;
         return [...new Set(allData.flatMap(row =>
-            (row[field] || '').split(',').map(value => value.trim()).filter(Boolean)
+            (row[field] || '').split(separator).map(value => value.trim()).filter(Boolean)
         ))];
     };
     
     const challengeTags = uniqueValues('Challenge Tag');
     const subChallengeTags = uniqueValues('Sub-Challeng Tag');
-    const solutionTags = uniqueValues('How to Solve');
     const trainingTypes = uniqueValues('Training Type');
     const datasets = uniqueValues('Dataset');
     const evaluations = uniqueValues('Evaluation');
     
     populateSelect('challengeFilter', challengeTags);
     populateSelect('subChallengeFilter', subChallengeTags);
-    populateSelect('solutionFilter', solutionTags);
     populateSelect('trainingFilter', trainingTypes);
     populateSelect('datasetFilter', datasets);
     populateSelect('evaluationFilter', evaluations);
@@ -93,24 +80,39 @@ function populateSelect(selectId, options) {
     });
 }
 
-// 태그 클래스 생성 함수
+// Generate tag class function
 function getTagClass(type, value) {
+    if (type === 'challenge') {
+        const lowerValue = value.toLowerCase();
+        if (lowerValue.includes('fusion') || lowerValue.includes('representation')) return 'tag tag-challenge-fusion';
+        if (lowerValue.includes('execution') || lowerValue.includes('complex')) return 'tag tag-challenge-execution';
+        if (lowerValue.includes('generalization') || lowerValue.includes('learning')) return 'tag tag-challenge-generalization';
+        if (lowerValue.includes('security') || lowerValue.includes('reliable')) return 'tag tag-challenge-security';
+        if (lowerValue.includes('dataset') || lowerValue.includes('benchmarking')) return 'tag tag-challenge-dataset';
+    }
+    if (type === 'dataset-eval') {
+        return 'tag tag-dataset-eval';
+    }
+    if (type === 'default') {
+        return 'tag tag-default';
+    }
+    
     const normalizedValue = value.toLowerCase().replace(/[\s-]/g, '-');
     return `tag tag-${type}-${normalizedValue}`;
 }
 
-// 검색어 하이라이트 함수
+// Highlight search term function
 function highlightSearchTerm(text, searchTerm) {
     if (!text || !searchTerm || searchTerm.length < 2) return text;
     
-    // HTML 엔티티 이스케이프
+    // Escape HTML entities
     const escapeHtml = (str) => {
         const div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
     };
     
-    // 정규식 특수문자 이스케이프
+    // Escape regex special characters
     const escapeRegExp = (str) => {
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     };
@@ -120,7 +122,7 @@ function highlightSearchTerm(text, searchTerm) {
     return safeText.replace(regex, '<mark>$1</mark>');
 }
 
-// 테이블 업데이트
+// Update table
 function updateTable() {
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
@@ -137,10 +139,10 @@ function updateTable() {
     
     pageData.forEach(row => {
         const tr = document.createElement('tr');
-        const renderTagCell = (field, type) => {
-            const values = (row[field] || '').split(',').map(value => value.trim()).filter(Boolean);
+        const renderTagCell = (field, type, separator = ',') => {
+            const values = (row[field] || '').split(separator).map(value => value.trim()).filter(Boolean);
             if (values.length === 0) return '-';
-            return values.map(value => {
+            return values.map((value) => {
                 const highlighted = searchTerm ? highlightSearchTerm(value, searchTerm) : value;
                 return `<span class="${getTagClass(type, value)}">${highlighted}</span>`;
             }).join(' ');
@@ -168,11 +170,43 @@ function updateTable() {
         }
         tr.innerHTML += `<td>${linkContent || '-'}</td>`;
         
-        // Challenge Tag
-        tr.innerHTML += `<td>${renderTagCell('Challenge Tag', 'challenge')}</td>`;
+        // Challenge Tag & Sub-Challeng Tag (paired bubbles)
+        const rawChallenge = row['Challenge Tag'] || '';
+        const rawSubChallenge = row['Sub-Challeng Tag'] || '';
+        const challengeTags = rawChallenge.split(';').map(v => v.trim()).filter(Boolean);
+        const subChallenges = rawSubChallenge.split(';').map(v => v.trim()).filter(Boolean);
+        
+        // Challenge Tag cell
+        let challengeHtml = '-';
+        if (challengeTags.length > 0) {
+            challengeHtml = challengeTags.map(tag => {
+                const highlighted = searchTerm ? highlightSearchTerm(tag, searchTerm) : tag;
+                const cls = getTagClass('challenge', tag);
+                return `<span class="${cls}">${highlighted}</span>`;
+            }).join(' ');
+        }
+        tr.innerHTML += `<td>${challengeHtml}</td>`;
 
-        // Sub-Challeng Tag
-        tr.innerHTML += `<td>${renderTagCell('Sub-Challeng Tag', 'subchallenge')}</td>`;
+        // Sub-Challeng Tag cell
+        let subHtml = '-';
+        if (challengeTags.length > 1 && subChallenges.length > 0) {
+            const pairs = challengeTags.map((tag, idx) => {
+                const subText = subChallenges[idx] || '';
+                if (!subText) return '';
+                const highlightedSub = searchTerm ? highlightSearchTerm(subText, searchTerm) : subText;
+                const cls = getTagClass('challenge', tag); // same color as its challenge tag
+                return `<span class="${cls}">${highlightedSub}</span>`;
+            }).filter(Boolean);
+            if (pairs.length > 0) {
+                subHtml = pairs.join(' ');
+            }
+        } else {
+            const singleSub = rawSubChallenge.trim();
+            if (singleSub) {
+                subHtml = searchTerm ? highlightSearchTerm(singleSub, searchTerm) : singleSub;
+            }
+        }
+        tr.innerHTML += `<td>${subHtml}</td>`;
         
         // How to Solve
         tr.innerHTML += `<td>${renderTagCell('How to Solve', 'solution')}</td>`;
@@ -180,17 +214,17 @@ function updateTable() {
         // Training Type
         tr.innerHTML += `<td>${renderTagCell('Training Type', 'training')}</td>`;
         
-        // Dataset
-        tr.innerHTML += `<td>${renderTagCell('Dataset', 'dataset')}</td>`;
+        // Dataset (use ';' and single neutral bubble color)
+        tr.innerHTML += `<td>${renderTagCell('Dataset', 'dataset-eval', ';')}</td>`;
         
-        // Evaluation
-        tr.innerHTML += `<td>${renderTagCell('Evaluation', 'evaluation')}</td>`;
+        // Evaluation (use ';' and single neutral bubble color)
+        tr.innerHTML += `<td>${renderTagCell('Evaluation', 'dataset-eval', ';')}</td>`;
         
         tbody.appendChild(tr);
     });
 }
 
-// 검색 점수 계산
+// Calculate search score
 function calculateSearchScore(searchTerm, row) {
     const fieldWeights = {
         '略称': 10,
@@ -224,31 +258,32 @@ function calculateSearchScore(searchTerm, row) {
     return score;
 }
 
-// 필터링
+
 function applyFilters() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const challengeFilter = document.getElementById('challengeFilter').value;
     const subChallengeFilter = document.getElementById('subChallengeFilter').value;
-    const solutionFilter = document.getElementById('solutionFilter').value;
     const trainingFilter = document.getElementById('trainingFilter').value;
     const datasetFilter = document.getElementById('datasetFilter').value;
     const evaluationFilter = document.getElementById('evaluationFilter').value;
     
     const results = allData.map(row => {
-        const includesValue = (value, target) => (value || '').split(',').map(v => v.trim()).filter(Boolean).includes(target);
+        const includesValue = (value, target, field) => {
+            const separator = (field === 'Challenge Tag' || field === 'Sub-Challeng Tag' || field === 'Dataset' || field === 'Evaluation') ? /;/ : /,/;
+            return (value || '').split(separator).map(v => v.trim()).filter(Boolean).includes(target);
+        };
         
-        if (challengeFilter && !includesValue(row['Challenge Tag'], challengeFilter)) return null;
-        if (subChallengeFilter && !includesValue(row['Sub-Challeng Tag'], subChallengeFilter)) return null;
-        if (solutionFilter && !includesValue(row['How to Solve'], solutionFilter)) return null;
+        if (challengeFilter && !includesValue(row['Challenge Tag'], challengeFilter, 'Challenge Tag')) return null;
+        if (subChallengeFilter && !includesValue(row['Sub-Challeng Tag'], subChallengeFilter, 'Sub-Challeng Tag')) return null;
         if (trainingFilter && !includesValue(row['Training Type'], trainingFilter)) return null;
         if (datasetFilter && !includesValue(row['Dataset'], datasetFilter)) return null;
         if (evaluationFilter && !includesValue(row['Evaluation'], evaluationFilter)) return null;
         
-        // 검색어 매칭 및 점수 계산
+        // Search term matching and score calculation
         if (searchTerm) {
             const score = calculateSearchScore(searchTerm, row);
             if (score === 0) {
-                // 점수가 0이면 일반 검색
+                // If score is 0, perform general search
                 const searchMatch = Object.values(row).some(value => 
                     String(value).toLowerCase().includes(searchTerm)
                 );
@@ -260,7 +295,7 @@ function applyFilters() {
         return { row, score: 0 };
     }).filter(item => item !== null);
     
-    // 점수 기반 정렬
+
     if (searchTerm && results.some(item => item.score > 0)) {
         results.sort((a, b) => b.score - a.score);
     }
@@ -272,7 +307,7 @@ function applyFilters() {
     updatePagination();
 }
 
-// 정렬
+
 function sortTable(column) {
     if (sortColumn === column) {
         sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
@@ -323,7 +358,6 @@ function sortTable(column) {
     updateTable();
 }
 
-// 페이지네이션 업데이트
 function updatePagination() {
     const totalRecords = filteredData.length;
     const totalPages = Math.ceil(totalRecords / recordsPerPage);
@@ -342,7 +376,7 @@ function updatePagination() {
     document.getElementById('lastPage').disabled = currentPage >= totalPages;
 }
 
-// 페이지 변경
+// Change page
 function changePage(newPage) {
     const totalPages = Math.ceil(filteredData.length / recordsPerPage);
     if (newPage >= 1 && newPage <= totalPages) {
@@ -352,37 +386,35 @@ function changePage(newPage) {
     }
 }
 
-// 필터 초기화
+// Clear all filters
 function clearAllFilters() {
     document.getElementById('searchInput').value = '';
     document.getElementById('challengeFilter').value = '';
     document.getElementById('subChallengeFilter').value = '';
-    document.getElementById('solutionFilter').value = '';
     document.getElementById('trainingFilter').value = '';
     document.getElementById('datasetFilter').value = '';
     document.getElementById('evaluationFilter').value = '';
     applyFilters();
 }
 
-// 이벤트 리스너 설정
+// Set up event listeners
 document.addEventListener('DOMContentLoaded', function() {
     loadCSV();
     
-    // 필터 이벤트
+    // Filter events
     document.getElementById('searchInput').addEventListener('input', applyFilters);
     document.getElementById('challengeFilter').addEventListener('change', applyFilters);
     document.getElementById('subChallengeFilter').addEventListener('change', applyFilters);
-    document.getElementById('solutionFilter').addEventListener('change', applyFilters);
     document.getElementById('trainingFilter').addEventListener('change', applyFilters);
     document.getElementById('datasetFilter').addEventListener('change', applyFilters);
     document.getElementById('evaluationFilter').addEventListener('change', applyFilters);
     
-    // 정렬 이벤트
+    // Sort events
     document.querySelectorAll('th.sortable').forEach(th => {
         th.addEventListener('click', () => sortTable(parseInt(th.dataset.column)));
     });
     
-    // 페이지네이션 이벤트
+    // Pagination events
     document.getElementById('firstPage').addEventListener('click', () => changePage(1));
     document.getElementById('prevPage').addEventListener('click', () => changePage(currentPage - 1));
     document.getElementById('nextPage').addEventListener('click', () => changePage(currentPage + 1));
