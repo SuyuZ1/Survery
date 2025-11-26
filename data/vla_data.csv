@@ -4,14 +4,14 @@ and Physical World
 Representation",The GAP between Sematics  Perception  and Physical Interation,introdues a text-aware feature extraction which preserves semantics aligned with task description,BC,MIMIC-IT (MultI-Modal In-Context Instruction Tuning),POPE; MSRVTT-QA
 LIV,2023,https://proceedings.mlr.press/v202/ma23b/ma23b.pdf,https://penn-pal-lab.github.io/LIV/,"Multi-Modal Fusion
 and Physical World
-Representation",The GAP between Sematics  Perception  and Physical Interation,introdues a contrastive framework on robot-control data to construct a joint vision¨Clanguage embeddingspace,RL,Hopper-v2; HalfCheetah-v2; Walker2d-v2,?MuJoCo Environment
+Representation",The GAP between Sematics  Perception  and Physical Interation,introdues a contrastive framework on robot-control data to construct a joint visionÂ¨Clanguage embeddingspace,RL,Hopper-v2; HalfCheetah-v2; Walker2d-v2,?MuJoCo Environment
 ACT-LLM,2025,https://arxiv.org/pdf/2506.21250,https://github.com/jonyzhang2023/awesome-embodied-vla-va-vln,"Multi-Modal Fusion
 and Physical World
 Representation",The GAP between Sematics  Perception  and Physical Interation,formulates raw per- ceptual inputs into structured language representation,RL,BridgeData; OXE,
 Look-Leap,2023,https://arxiv.org/pdf/2311.17842,robot-vila.github.io,"Multi-Modal Fusion
 and Physical World
 Representation",The GAP between Sematics  Perception  and Physical Interation,"translates visual information not just into a state
-description; but into a complete; structured action plan",Predictive Modeling,GPT-4V×÷ÎªÔ¤ÑµÁ·ÊÓ¾õÓïÑÔÄ£ÐÍ,Real-Robot Benchmark
+description; but into a complete; structured action plan",Predictive Modeling,GPT-4V as a pre-trained visual language model,Real-Robot Benchmark
 RT-2,2023,https://arxiv.org/pdf/2307.12307,https://deepai.org/publication/robust-weighted-sum-rate-maximization-for-transmissive-ris-transmitter-enabled-rsma-networks,"Multi-Modal Fusion
 and Physical World
 Representation",The GAP between Sematics  Perception  and Physical Interation,pretrained VLM can be fine-tuned to directly output robot actions.,BC,RoboCat,Real-Robot Benchmark
@@ -26,7 +26,7 @@ and Physical World
 Representation",The GAP between Sematics  Perception  and Physical Interation,pretrained VLM can be fine-tuned to directly output robot actions.,BC,OXE; RT-X; RoboNet,Bridge Data
 CLIP-RT,2024,https://arxiv.org/pdf/2411.00508,https://clip-rt.github.io,"Multi-Modal Fusion
 and Physical World
-Representation",The GAP between Sematics  Perception  and Physical Interation,extends CLIP¡¯s vision¨Clanguage alignment concept to generate action representations conditioned on visual         scenes and task instructions,BC,RT-X,RT-X Bechmark
+Representation",The GAP between Sematics  Perception  and Physical Interation,extends CLIPÂ¡Â¯s visionÂ¨Clanguage alignment concept to generate action representations conditioned on visual         scenes and task instructions,BC,RT-X,RT-X Bechmark
 Humanoid-VLA,2025,https://arxiv.org/pdf/2502.14795,https://github.com/AllenXuuu/HumanVLA,"Multi-Modal Fusion
 and Physical World
 Representation",The GAP between Sematics  Perception  and Physical Interation,"language-action pre
@@ -34,10 +34,10 @@ training to reduce the gap between semantic and motor rep
 resentations",BC and Predictive Modeling and RL,Human Video Datasets; Robot Manipalation Datasets; Multimodal and Multitask Datasets,Whole-Body Locomotion and Manipulation Task Benchmarks
 VoxPoser,2023,https://arxiv.org/pdf/2307.05973,https://voxposer.github.io/,"Multi-Modal Fusion
 and Physical World
-Representation",The GAP between Sematics  Perception  and Physical Interation,"leverages an LLM¡¯s reasoning
+Representation",The GAP between Sematics  Perception  and Physical Interation,"leverages an LLMÂ¡Â¯s reasoning
 ability to generate intermediate programs and 3D affordance
 maps as strong intermediate representations for grounding
-visual¨Clinguistic understanding into spatial actions",BC,Mini-RLBench; ALOHA (A Lot of HAnds) ;Bridge-Data-V2,RLBench (Robot Learning Benchmark)
+visualÂ¨Clinguistic understanding into spatial actions",BC,Mini-RLBench; ALOHA (A Lot of HAnds) ;Bridge-Data-V2,RLBench (Robot Learning Benchmark)
 Orion,2025,https://arxiv.org/pdf/2503.19755,https://xiaomi-mlab.github.io/Orion/,"Multi-Modal Fusion
 and Physical World
 Representation",The GAP between Sematics  Perception  and Physical Interation,"VLM acts as a high-level planner for se
@@ -88,3 +88,4 @@ ForceVLA,2025,https://arxiv.org/pdf/2505.22159,https://sites.google.com/view/for
 and Physical World
 Representation",The GAP between Sematics  Perception  and Physical Interation,"to modular mixture-of-experts (MoE) fusion that preserves
 original VLM representations",BC,Force-VLA-Dataset,Force-VLA-Benchmark
+
