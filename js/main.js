@@ -79,16 +79,37 @@ function populateSelect(selectId, options) {
         select.appendChild(optionElement);
     });
 }
+// Generate a stable HSL color based on a string
+function stringToColor(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const hue = Math.abs(hash) % 360; // 0–359
+    const saturation = 55; // moderate saturation
+    const lightness = 68; // soft appearance
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
 
 // Generate tag class function
 function getTagClass(type, value) {
+    if (!value) return 'tag tag-default';
+    const lowerValue = value.toLowerCase().trim();
+    
     if (type === 'challenge') {
-        const lowerValue = value.toLowerCase();
         if (lowerValue.includes('fusion') || lowerValue.includes('representation')) return 'tag tag-challenge-fusion';
         if (lowerValue.includes('execution') || lowerValue.includes('complex')) return 'tag tag-challenge-execution';
         if (lowerValue.includes('generalization') || lowerValue.includes('learning')) return 'tag tag-challenge-generalization';
         if (lowerValue.includes('security') || lowerValue.includes('reliable')) return 'tag tag-challenge-security';
         if (lowerValue.includes('dataset') || lowerValue.includes('benchmarking')) return 'tag tag-challenge-dataset';
+    }
+    if (type === 'dataset') {
+        return `tag tag-auto" style="background-color:${stringToColor(value)}; color:#000;`;
+    }
+    if (type === 'evaluation') {
+        return `tag tag-auto" style="background-color:${stringToColor(value)}; color:#000;`;
     }
     if (type === 'dataset-eval') {
         return 'tag tag-dataset-eval';
@@ -215,10 +236,10 @@ function updateTable() {
         tr.innerHTML += `<td>${renderTagCell('Training Type', 'training')}</td>`;
         
         // Dataset (use ';' and single neutral bubble color)
-        tr.innerHTML += `<td>${renderTagCell('Dataset', 'dataset-eval', ';')}</td>`;
+        tr.innerHTML += `<td>${renderTagCell('Dataset', 'dataset', ';')}</td>`;
         
         // Evaluation (use ';' and single neutral bubble color)
-        tr.innerHTML += `<td>${renderTagCell('Evaluation', 'dataset-eval', ';')}</td>`;
+        tr.innerHTML += `<td>${renderTagCell('Evaluation', 'evaluation', ';')}</td>`;
         
         tbody.appendChild(tr);
     });
