@@ -294,3 +294,28 @@ pre {
         padding-bottom: 75%; /* Adjust aspect ratio for mobile */
     }
 }
+
+/* Fix table layout to maintain consistent width */
+#surveyTable {
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Ensure table cells wrap instead of stretching */
+#surveyTable th:nth-child(2),
+#surveyTable td:nth-child(2) {
+    width: 80px;   /* Year 列固定宽度 */
+}
+#surveyTable td, 
+#surveyTable th {
+    word-wrap: break-word;
+    white-space: normal;
+}
+#surveyTable th:nth-child(4),
+#surveyTable td:nth-child(4) {
+    width: 220px;   /* Challenge Tag 列固定宽度 */
+}
+#surveyTable th:nth-child(5),
+#surveyTable td:nth-child(5) {
+    width: 150px;   /* Sub-Challenge Tag 列固定宽度 */
+}
