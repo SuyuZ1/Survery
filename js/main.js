@@ -25,6 +25,120 @@ async function loadCSV() {
         
         allData = result.data;
         
+        // ------ Group rows by Abbreviation (preserve mapping info) ------
+        const grouped = {}; // key: 略称 -> { baseRowFields..., challenges: Set, challengeOrder:[], subMap: Map, solveMap: Map }
+
+        allData.forEach(row => {
+            const key = (row['略称'] || '').trim();
+            if (!key) return; // skip empty abbrev
+
+            // Ensure row exists
+            if (!grouped[key]) {
+                grouped[key] = {
+                    // keep first-seen basic fields (you can customize which field to keep/overwrite)
+                    ...row,
+                    challenges: new Set(),      // set of challenge tags
+                    challengeOrder: [],         // keep insertion order for challenges
+                    subMap: new Map(),          // Map subTag -> Set of challengeTags (sources)
+                    solveMap: new Map()         // Map solveText -> Set of challengeTags (sources)
+                };
+            }
+
+            const entry = grouped[key];
+
+            // Parse challenge tags (split by ';' as your data uses)
+            const challengeTags = (row['Challenge Tag'] || '')
+                .split(';').map(s => s.trim()).filter(Boolean);
+
+            // If no challengeTags but row has something else, fallback to single empty string to keep processing
+            // (but we won't record empty challenge)
+            if (challengeTags.length === 0) {
+                // nothing to add to challenges
+            } else {
+                // add to entry.challenges preserving order
+                challengeTags.forEach(ct => {
+                    if (!entry.challenges.has(ct)) {
+                        entry.challenges.add(ct);
+                        entry.challengeOrder.push(ct);
+                    }
+                });
+            }
+
+            // Parse sub-challenge tags (split by ';')
+            const subTags = (row['Sub-Challeng Tag'] || '')
+                .split(';').map(s => s.trim()).filter(Boolean);
+
+            // Map subTags -> challenge source:
+            // If there are multiple challengeTags, assume positional pairing:
+            // subTags[i] corresponds to challengeTags[i] if available, else fallback to first challengeTag.
+            if (subTags.length > 0) {
+                subTags.forEach((sub, idx) => {
+                    let sourceChallenge = null;
+                    if (challengeTags.length > idx) {
+                        sourceChallenge = challengeTags[idx];
+                    } else if (challengeTags.length === 1) {
+                        sourceChallenge = challengeTags[0];
+                    } else {
+                        // fallback: if entry already has some challenges, use the first known one
+                        sourceChallenge = entry.challengeOrder[0] || null;
+                    }
+
+                    if (!entry.subMap.has(sub)) entry.subMap.set(sub, new Set());
+                    if (sourceChallenge) entry.subMap.get(sub).add(sourceChallenge);
+                });
+            }
+
+            // Parse How to Solve (split by ',' as before)
+            const solveItems = (row['How to Solve'] || '')
+                .split(',').map(s => s.trim()).filter(Boolean);
+
+            if (solveItems.length > 0) {
+                solveItems.forEach((solve, idx) => {
+                    // Pairing strategy similar to subTags:
+                    let sourceChallenge = null;
+                    if (challengeTags.length > idx) {
+                        sourceChallenge = challengeTags[idx];
+                    } else if (challengeTags.length === 1) {
+                        sourceChallenge = challengeTags[0];
+                    } else {
+                        sourceChallenge = entry.challengeOrder[0] || null;
+                    }
+
+                    if (!entry.solveMap.has(solve)) entry.solveMap.set(solve, new Set());
+                    if (sourceChallenge) entry.solveMap.get(solve).add(sourceChallenge);
+                });
+            }
+
+            // Also keep other fields if needed (e.g., Year, URLs). We keep first row's fields by default.
+            // If you want to merge other columns too, you can extend this block.
+        });
+
+        // Convert grouped back to allData array, and transform maps/sets to strings for compatibility
+        allData = Object.keys(grouped).map(key => {
+            const e = grouped[key];
+
+            // produce merged 'Challenge Tag' string (preserve order)
+            const mergedChallenge = e.challengeOrder.join(';');
+
+            // For Sub-Challeng Tag and How to Solve we keep original string format (joined)
+            // but we'll render using subMap/solveMap in the table, so storing the joined strings is optional.
+            const mergedSub = [...e.subMap.keys()].join(';');
+            const mergedSolve = [...e.solveMap.keys()].join(',');
+
+            return {
+                // use stored first-seen fields (like Year, Paper URL, Website URL, 略称)
+                ...e,
+                'Challenge Tag': mergedChallenge,
+                'Sub-Challeng Tag': mergedSub,
+                'How to Solve': mergedSolve,
+                // expose the maps for rendering (we will use these maps later)
+                __subMap: e.subMap,
+                __solveMap: e.solveMap,
+                __challengeOrder: e.challengeOrder
+            };
+        });
+
+
         // Filter out any empty rows that might have been created
         allData = allData.filter(row => row['略称'] && row['略称'].trim() !== '');
         
@@ -194,12 +308,13 @@ function updateTable() {
         tr.innerHTML += `<td>${linkContent || '-'}</td>`;
         
         // Challenge Tag & Sub-Challeng Tag (paired bubbles)
-        const rawChallenge = row['Challenge Tag'] || '';
-        const rawSubChallenge = row['Sub-Challeng Tag'] || '';
-        const challengeTags = rawChallenge.split(';').map(v => v.trim()).filter(Boolean);
-        const subChallenges = rawSubChallenge.split(';').map(v => v.trim()).filter(Boolean);
+        // const rawChallenge = row['Challenge Tag'] || '';
+        // const rawSubChallenge = row['Sub-Challeng Tag'] || '';
+        // const challengeTags = rawChallenge.split(';').map(v => v.trim()).filter(Boolean);
+        // const subChallenges = rawSubChallenge.split(';').map(v => v.trim()).filter(Boolean);
         
-        // Challenge Tag cell
+        // --- prepare challenge tags (display once, ordered) ---
+        const challengeTags = (row['Challenge Tag'] || '').split(';').map(v=>v.trim()).filter(Boolean);
         let challengeHtml = '-';
         if (challengeTags.length > 0) {
             challengeHtml = challengeTags.map(tag => {
@@ -210,29 +325,43 @@ function updateTable() {
         }
         tr.innerHTML += `<td>${challengeHtml}</td>`;
 
-        // Sub-Challeng Tag cell
+        // --- sub-challenge: render each sub possibly multiple times (one per source challenge) ---
         let subHtml = '-';
-        if (challengeTags.length > 1 && subChallenges.length > 0) {
-            const pairs = challengeTags.map((tag, idx) => {
-                const subText = subChallenges[idx] || '';
-                if (!subText) return '';
-                const highlightedSub = searchTerm ? highlightSearchTerm(subText, searchTerm) : subText;
-                const cls = getTagClass('challenge', tag); // same color as its challenge tag
-                return `<span class="${cls}">${highlightedSub}</span>`;
-            }).filter(Boolean);
-            if (pairs.length > 0) {
-                subHtml = pairs.join(' ');
+        const subMap = row.__subMap || new Map();
+        if (subMap.size > 0) {
+            const parts = [];
+            // iterate keys in insertion order
+            for (const [sub, challengeSet] of subMap.entries()) {
+                // For each source challenge that produced this sub, create a colored span.
+                // If a sub came from multiple challenges, we'll show multiple spans (same text, diff colors)
+                for (const ch of challengeSet) {
+                    const highlighted = searchTerm ? highlightSearchTerm(sub, searchTerm) : sub;
+                    const cls = getTagClass('challenge', ch || '');
+                    parts.push(`<span class="${cls}">${highlighted}</span>`);
+                }
             }
-        } else {
-            const singleSub = rawSubChallenge.trim();
-            if (singleSub) {
-                subHtml = searchTerm ? highlightSearchTerm(singleSub, searchTerm) : singleSub;
-            }
+            if (parts.length > 0) subHtml = parts.join(' ');
         }
         tr.innerHTML += `<td>${subHtml}</td>`;
         
-        // How to Solve
-        tr.innerHTML += `<td>${renderTagCell('How to Solve', 'solution')}</td>`;
+        // --- How to Solve: similar to sub ---
+        // We'll use row.__solveMap (solveText -> Set of associated challenge tags)
+        let solveHtml = '-';
+        const solveMap = row.__solveMap || new Map();
+        if (solveMap.size > 0) {
+            const parts = [];
+            for (const [solve, challengeSet] of solveMap.entries()) {
+                for (const ch of challengeSet) {
+                    // Use challenge color for how-to-solve that originated with that challenge
+                    const highlighted = searchTerm ? highlightSearchTerm(solve, searchTerm) : solve;
+                    // we reuse challenge coloring so use getTagClass('challenge', ch)
+                    const cls = getTagClass('challenge', ch || '');
+                    parts.push(`<span class="${cls}">${highlighted}</span>`);
+                }
+            }
+            if (parts.length > 0) solveHtml = parts.join(' ');
+        }
+        tr.innerHTML += `<td>${solveHtml}</td>`;
         
         // Training Type
         tr.innerHTML += `<td>${renderTagCell('Training Type', 'training')}</td>`;

@@ -317,5 +317,9 @@ pre {
 }
 #surveyTable th:nth-child(5),
 #surveyTable td:nth-child(5) {
-    width: 150px;   /* Sub-Challenge Tag 列固定宽度 */
+    width: 200px;   /* Sub-Challenge Tag 列固定宽度 */
+}
+#surveyTable th:nth-child(6),
+#surveyTable td:nth-child(6) {
+    width: 220px;   /* How to Solve 列固定宽度 */
 }
