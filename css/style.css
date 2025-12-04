@@ -203,7 +203,7 @@ a:hover {
 .tag-domain-meta { background-color: #7f8c8d; color: white; }
 
 /* Challenge Tag colors - exact mapping from user spec */
-.tag-challenge-fusion { background-color: #efe00d; color: #000; }
+.tag-challenge-fusion { background-color: #eee991; color: #000; }
 .tag-challenge-execution { background-color: #e59f52; color: #000; }
 .tag-challenge-generalization { background-color: #d4d4d4; color: #000; }
 .tag-challenge-security { background-color: #7aa4c9; color: #000; }
