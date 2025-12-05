@@ -225,7 +225,7 @@ function getTagClass(type, value) {
     }
     if (type === 'evaluation') {
         // return `tag tag-auto" style="background-color:${stringToColor(value)}; color:#000;`;
-        return `tag tag-auto" style="background-color:#7f8c8d; color:#000;`;
+        return `tag tag-auto" style="background-color:#90b9e4; color:#000;`;
     }
     if (type === 'dataset-eval') {
         return 'tag tag-dataset-eval';
