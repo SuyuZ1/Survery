@@ -230,6 +230,9 @@ function getTagClass(type, value) {
     if (type === 'dataset-eval') {
         return 'tag tag-dataset-eval';
     }
+    if (type === 'training') {
+        return 'tag tag-default';
+    }
     if (type === 'default') {
         return 'tag tag-default';
     }
@@ -421,16 +424,28 @@ function applyFilters() {
     
     const results = allData.map(row => {
         const includesValue = (value, target, field) => {
-            const separator = (field === 'Challenge Tag' || field === 'Sub-Challeng Tag' || field === 'Dataset' || field === 'Evaluation') ? /;/ : /,/;
-            return (value || '').split(separator).map(v => v.trim()).filter(Boolean).includes(target);
+            const separator = (field === 'Challenge Tag' || field === 'Sub-Challeng Tag' || field === 'Dataset' || field === 'Evaluation')
+                ? /;/
+                : /,/;
+
+            const values = (value || '').split(separator).map(v => v.trim()).filter(Boolean);
+
+            // Dataset / Evaluation: allow partial match, e.g. "CLIPORT" matches "CLIPORT;VLMA-BENCH"
+            if (field === 'Dataset' || field === 'Evaluation') {
+                return values.some(v => v.toLowerCase().includes(target.toLowerCase()));
+            }
+
+            // Other fields: keep strict equality
+            return values.includes(target);
         };
+
         
         if (challengeFilter && !includesValue(row['Challenge Tag'], challengeFilter, 'Challenge Tag')) return null;
         if (subChallengeFilter && !includesValue(row['Sub-Challeng Tag'], subChallengeFilter, 'Sub-Challeng Tag')) return null;
-        if (trainingFilter && !includesValue(row['Training Type'], trainingFilter)) return null;
-        if (datasetFilter && !includesValue(row['Dataset'], datasetFilter)) return null;
-        if (evaluationFilter && !includesValue(row['Evaluation'], evaluationFilter)) return null;
-        
+        if (trainingFilter && !includesValue(row['Training Type'], trainingFilter, 'Training Type')) return null;
+        if (datasetFilter && !includesValue(row['Dataset'], datasetFilter, 'Dataset')) return null;
+        if (evaluationFilter && !includesValue(row['Evaluation'], evaluationFilter, 'Evaluation')) return null;
+
         // Search term matching and score calculation
         if (searchTerm) {
             const score = calculateSearchScore(searchTerm, row);
