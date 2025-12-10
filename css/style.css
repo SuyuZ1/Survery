@@ -323,3 +323,55 @@ pre {
 #surveyTable td:nth-child(6) {
     width: 220px;   /* How to Solve 列固定宽度 */
 }
+
+/* Latest Papers Horizontal Scroll */
+/* Horizontal scroll */
+.latest-scroll-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+}
+
+.latest-scroll {
+    display: inline-flex;
+    gap: 15px;
+}
+
+/* Card layout */
+.latest-card {
+    min-width: 330px;
+    max-width: 330px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px 18px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    white-space: normal;
+    transition: 0.2s;
+}
+
+.latest-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.latest-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1c2e4a;
+}
+
+.latest-subtitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: #52627a;
+    margin-top: 4px;
+}
+
+.latest-section-label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 8px;
+    color: #2d3a48;
+}
+

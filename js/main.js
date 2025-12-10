@@ -564,10 +564,208 @@ function clearAllFilters() {
     applyFilters();
 }
 
+// Load latest.csv and render horizontally scrollable cards
+async function loadLatestCSV() {
+    try {
+        const response = await fetch('data/latest.csv');
+        const text = await response.text();
+
+        const result = Papa.parse(text, {
+            header: true,
+            skipEmptyLines: true,
+            dynamicTyping: true
+        });
+
+        let data = result.data.filter(row => row["略称"]?.trim());
+
+        // --- reuse same grouping logic as vla_data.csv ---
+        const grouped = {};
+
+        data.forEach(row => {
+            const key = (row['略称'] || '').trim();
+            if (!key) return;
+
+            if (!grouped[key]) {
+                grouped[key] = {
+                    ...row,
+                    challenges: new Set(),
+                    challengeOrder: [],
+                    subMap: new Map(),
+                    solveMap: new Map()
+                };
+            }
+
+            const entry = grouped[key];
+
+            const challengeTags = (row['Challenge Tag'] || '')
+                .split(';').map(s => s.trim()).filter(Boolean);
+            challengeTags.forEach(ct => {
+                if (!entry.challenges.has(ct)) {
+                    entry.challenges.add(ct);
+                    entry.challengeOrder.push(ct);
+                }
+            });
+
+            const subTags = (row['Sub-Challeng Tag'] || '')
+                .split(';').map(s => s.trim()).filter(Boolean);
+            subTags.forEach((sub, idx) => {
+                let src = challengeTags[idx] || challengeTags[0] || null;
+                if (!entry.subMap.has(sub)) entry.subMap.set(sub, new Set());
+                if (src) entry.subMap.get(sub).add(src);
+            });
+
+            const solveItems = (row['How to Solve'] || '')
+                .split(',').map(s => s.trim()).filter(Boolean);
+            solveItems.forEach((solve, idx) => {
+                let src = challengeTags[idx] || challengeTags[0] || null;
+                if (!entry.solveMap.has(solve)) entry.solveMap.set(solve, new Set());
+                if (src) entry.solveMap.get(solve).add(src);
+            });
+        });
+
+        data = Object.keys(grouped).map(k => {
+            const e = grouped[k];
+            return {
+                ...e,
+                __challengeOrder: e.challengeOrder,
+                __subMap: e.subMap,
+                __solveMap: e.solveMap,
+                'Challenge Tag': e.challengeOrder.join(';'),
+                'Sub-Challeng Tag': [...e.subMap.keys()].join(';'),
+                'How to Solve': [...e.solveMap.keys()].join(',')
+            };
+        });
+
+        // Sort newest first
+        data.sort((a,b)=> (b.Year || 0) - (a.Year || 0));
+
+        renderLatestCards(data);
+
+    } catch (err) {
+        console.error("Error loading latest.csv:", err);
+    }
+}
+
+
+// Render card layout using SAME logic as vla_data table
+function renderLatestCards(latestData) {
+    const container = document.getElementById("latestScroll");
+    container.innerHTML = "";
+
+    latestData.forEach(row => {
+        const card = document.createElement("div");
+        card.className = "latest-card";
+
+        // ----- challenge tags -----
+        const challengeHTML = row.__challengeOrder.length
+            ? row.__challengeOrder.map(tag => {
+                return `<span class="${getTagClass('challenge', tag)}">${tag}</span>`;
+            }).join(' ')
+            : "-";
+
+        // ----- sub-challenge -----
+        let subHTML = "-";
+        if (row.__subMap.size > 0) {
+            const arr = [];
+            for (const [sub, challengeSet] of row.__subMap.entries()) {
+                for (const ch of challengeSet) {
+                    arr.push(`<span class="${getTagClass('challenge', ch)}">${sub}</span>`);
+                }
+            }
+            subHTML = arr.join(" ");
+        }
+
+        // ----- how to solve -----
+        let solveHTML = "-";
+        if (row.__solveMap.size > 0) {
+            const arr = [];
+            for (const [solve, challengeSet] of row.__solveMap.entries()) {
+                for (const ch of challengeSet) {
+                    arr.push(`<span class="${getTagClass('challenge', ch)}">${solve}</span>`);
+                }
+            }
+            solveHTML = arr.join(" ");
+        }
+
+        // ----- dataset -----
+        const datasetHTML = (row["Dataset"] || "")
+            .split(';').filter(Boolean)
+            .map(d => `<span class="${getTagClass('dataset', d)}">${d}</span>`)
+            .join(" ") || "-";
+
+        // ----- evaluation -----
+        const evalHTML = (row["Evaluation"] || "")
+            .split(';').filter(Boolean)
+            .map(d => `<span class="${getTagClass('evaluation', d)}">${d}</span>`)
+            .join(" ") || "-";
+
+        // ----- Links -----
+        let linkHTML = "-";
+        if (row["Paper URL"] || row["Website URL"]) {
+            linkHTML = "";
+            if (row["Paper URL"]) {
+                linkHTML += `<a href="${row["Paper URL"]}" target="_blank" class="mr-2">Paper</a>`;
+            }
+            if (row["Website URL"]) {
+                linkHTML += `<a href="${row["Website URL"]}" target="_blank">Website</a>`;
+            }
+        }
+
+        // ----- Training Type -----
+        let trainingHTML = "-";
+        if (row["Training Type"]) {
+            trainingHTML = row["Training Type"]
+                .split(',')
+                .map(t => `<span class="${getTagClass('training', t.trim())}">${t.trim()}</span>`)
+                .join(" ");
+        }
+
+        card.innerHTML = `
+            <div class="latest-title">${row["略称"]}</div>
+            <div class="latest-subtitle">${row["Title"] || ""}</div>
+
+            <div class="latest-section-label mt-2">Year</div>
+            <div>${row["Year"] || "-"}</div>
+
+            <div class="latest-section-label">Challenge</div>
+            <div>${challengeHTML}</div>
+
+            <div class="latest-section-label">Sub-Challenge</div>
+            <div>${subHTML}</div>
+
+            <div class="latest-section-label">How to Solve</div>
+            <div>${solveHTML}</div>
+
+            <div class="latest-section-label">Training Type</div>
+            <div>${trainingHTML}</div>
+
+            <div class="latest-section-label">Dataset</div>
+            <div>${datasetHTML}</div>
+
+            <div class="latest-section-label">Evaluation</div>
+            <div>${evalHTML}</div>
+
+            <div class="latest-section-label mt-2">Link</div>
+            <div>${linkHTML}</div>
+        `;
+
+
+        container.appendChild(card);
+    });
+}
+
+
+// Add call after DOM loaded
+document.addEventListener("DOMContentLoaded", function () {
+    loadLatestCSV();
+});
+
+
 // Set up event listeners
 document.addEventListener('DOMContentLoaded', function() {
+    loadLatestCSV();
     loadCSV();
-    
+
     // Filter events
     document.getElementById('searchInput').addEventListener('input', applyFilters);
     document.getElementById('challengeFilter').addEventListener('change', applyFilters);
