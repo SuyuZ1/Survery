@@ -5,6 +5,70 @@ let recordsPerPage = 10;
 let sortColumn = null;
 let sortDirection = 'asc';
 
+// Flexible date parsing function
+function parseFlexibleDate(raw) {
+    if (raw === null || raw === undefined) return null;
+
+    // If already Date
+    if (raw instanceof Date) return isNaN(raw.getTime()) ? null : raw;
+
+    // If number (e.g., 2025)
+    if (typeof raw === 'number' && Number.isFinite(raw)) {
+        return new Date(raw, 0, 1);
+    }
+
+    // Normalize to string and trim BOM + whitespace
+    let str = String(raw).replace(/^\uFEFF/, '').trim();
+    if (!str) return null;
+
+    // Replace various dash-like Unicode chars with ASCII hyphen, and normalize other separators to '-'
+    // covers: –, —, −, —, fullwidth '－', slashes, dots, spaces
+    str = str.replace(/[\u2012-\u2015\u2212\uFF0D]/g, '-'); // various dashes -> '-'
+    str = str.replace(/[\/\.]/g, '-'); // slash/dot -> '-'
+    str = str.replace(/\s+/g, ' '); // normalize spaces
+
+    // If string contains time or extra text, extract the leading date-like part
+    // e.g. "2025-12-1T00:00:00" or "2025-12-1 (accepted)"
+    const lead = str.match(/^(\d{4}[-\d\s]{0,20})/);
+    if (lead) {
+        // keep full string for further parse, but ensure we take first date-like token
+        str = str.split(/[T\s(]/)[0];
+    }
+
+    // If just a year
+    if (/^\d{4}$/.test(str)) {
+        return new Date(parseInt(str, 10), 0, 1);
+    }
+
+    // Match year-month-day with 1-2 digits for month/day
+    const m = str.match(/^(\d{4})[-\s]?(\d{1,2})[-\s]?(\d{1,2})$/);
+    if (m) {
+        const y = m[1];
+        const mo = String(m[2]).padStart(2, '0');
+        const d = String(m[3]).padStart(2, '0');
+        const iso = `${y}-${mo}-${d}`;
+        const dt = new Date(iso);
+        if (!isNaN(dt.getTime())) return dt;
+    }
+
+    // Try loose match for cases like "2025 12 01" or "2025-12-01..."
+    const loose = str.match(/(\d{4}).*?(\d{1,2}).*?(\d{1,2})/);
+    if (loose) {
+        const y = loose[1];
+        const mo = String(loose[2]).padStart(2, '0');
+        const d = String(loose[3]).padStart(2, '0');
+        const iso = `${y}-${mo}-${d}`;
+        const dt = new Date(iso);
+        if (!isNaN(dt.getTime())) return dt;
+    }
+
+    // Last resort: Date.parse on the entire cleaned string
+    const parsed = Date.parse(str);
+    if (!isNaN(parsed)) return new Date(parsed);
+
+    return null;
+}
+
 // Load CSV file
 async function loadCSV() {
     try {
@@ -142,12 +206,12 @@ async function loadCSV() {
         // Filter out any empty rows that might have been created
         allData = allData.filter(row => row['略称'] && row['略称'].trim() !== '');
         
-        // Sort by Year (newest first) as default
         allData.sort((a, b) => {
-            const yearA = parseInt(a['Year'] || 0);
-            const yearB = parseInt(b['Year'] || 0);
-            return yearB - yearA; // Descending order (newest first)
+            const da = parseFlexibleDate(a["Year"]);
+            const db = parseFlexibleDate(b["Year"]);
+            return (db?.getTime() || 0) - (da?.getTime() || 0);
         });
+
         
         filteredData = [...allData];
         
@@ -499,12 +563,23 @@ function sortTable(column) {
     filteredData.sort((a, b) => {
         let aVal = a[key] || '';
         let bVal = b[key] || '';
-        
+
+        // Special case: Year sorting using real dates
+        if (key === 'Year') {
+            const da = parseFlexibleDate(aVal);
+            const db = parseFlexibleDate(bVal);
+            if (sortDirection === 'asc') {
+                return (da?.getTime() || 0) - (db?.getTime() || 0);
+            } else {
+                return (db?.getTime() || 0) - (da?.getTime() || 0);
+            }
+        }
+
+        // Non-Year columns: keep original sorting rule
         if (['Challenge Tag', 'Sub-Challeng Tag', 'How to Solve', 'Training Type', 'Dataset', 'Evaluation'].includes(key)) {
             aVal = aVal.split(',')[0].trim() || '';
             bVal = bVal.split(',')[0].trim() || '';
         }
-        
         if (sortDirection === 'asc') {
             return aVal.localeCompare(bVal);
         } else {
@@ -637,7 +712,11 @@ async function loadLatestCSV() {
         });
 
         // Sort newest first
-        data.sort((a,b)=> (b.Year || 0) - (a.Year || 0));
+        data.sort((a, b) => {
+            const da = parseFlexibleDate(a["Year"]);
+            const db = parseFlexibleDate(b["Year"]);
+            return (db?.getTime() || 0) - (da?.getTime() || 0);
+        });
 
         renderLatestCards(data);
 
@@ -763,7 +842,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Set up event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    loadLatestCSV();
     loadCSV();
 
     // Filter events

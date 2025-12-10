@@ -304,7 +304,7 @@ pre {
 /* Ensure table cells wrap instead of stretching */
 #surveyTable th:nth-child(2),
 #surveyTable td:nth-child(2) {
-    width: 80px;   /* Year 列固定宽度 */
+    width: 100px;   /* Year 列固定宽度 */
 }
 #surveyTable td, 
 #surveyTable th {
@@ -339,8 +339,8 @@ pre {
 
 /* Card layout */
 .latest-card {
-    min-width: 330px;
-    max-width: 330px;
+    min-width: 370px;
+    max-width: 370px;
     background: #ffffff;
     border-radius: 12px;
     padding: 15px 18px;
