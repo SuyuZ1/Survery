@@ -154,7 +154,7 @@ async function loadCSV() {
 
             // Parse How to Solve (split by ',' as before)
             const solveItems = (row['How to Solve'] || '')
-                .split(',').map(s => s.trim()).filter(Boolean);
+                .split(';').map(s => s.trim()).filter(Boolean);
 
             if (solveItems.length > 0) {
                 solveItems.forEach((solve, idx) => {
@@ -187,7 +187,7 @@ async function loadCSV() {
             // For Sub-Challeng Tag and How to Solve we keep original string format (joined)
             // but we'll render using subMap/solveMap in the table, so storing the joined strings is optional.
             const mergedSub = [...e.subMap.keys()].join(';');
-            const mergedSolve = [...e.solveMap.keys()].join(',');
+            const mergedSolve = [...e.solveMap.keys()].join(';');
 
             return {
                 // use stored first-seen fields (like Year, Paper URL, Website URL, 略称)
@@ -690,7 +690,7 @@ async function loadLatestCSV() {
             });
 
             const solveItems = (row['How to Solve'] || '')
-                .split(',').map(s => s.trim()).filter(Boolean);
+                .split(';').map(s => s.trim()).filter(Boolean);
             solveItems.forEach((solve, idx) => {
                 let src = challengeTags[idx] || challengeTags[0] || null;
                 if (!entry.solveMap.has(solve)) entry.solveMap.set(solve, new Set());
@@ -707,7 +707,7 @@ async function loadLatestCSV() {
                 __solveMap: e.solveMap,
                 'Challenge Tag': e.challengeOrder.join(';'),
                 'Sub-Challeng Tag': [...e.subMap.keys()].join(';'),
-                'How to Solve': [...e.solveMap.keys()].join(',')
+                'How to Solve': [...e.solveMap.keys()].join(';')
             };
         });
 

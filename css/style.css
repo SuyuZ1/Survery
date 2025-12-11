@@ -339,8 +339,8 @@ pre {
 
 /* Card layout */
 .latest-card {
-    min-width: 370px;
-    max-width: 370px;
+    min-width: 440px;
+    max-width: 440px;
     background: #ffffff;
     border-radius: 12px;
     padding: 15px 18px;
