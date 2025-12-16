@@ -169,7 +169,22 @@
                         <p class="mb-0 mr-3">
                             Recently-added or newly-published VLA papers
                             <span id="latestUpdatedDate" style="font-weight: 600; color:#2c3e50;">
-                                (Updated on: 2025-12-15)
+                            <script>
+                                // Load latest update date from CSV
+                                fetch('data/latest.csv')
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        const lines = data.trim().split('\n');
+                                        if (lines.length > 1) {
+                                            const lastRow = lines[lines.length - 1];
+                                            const columns = lastRow.split(',');
+                                            // Assuming the date is in the third column, adjust index as needed
+                                            const latestDate = columns[2].trim();
+                                            document.getElementById('latestUpdatedDate').textContent = '(Updated on: ' + latestDate + ')';
+                                        }
+                                    })
+                                    .catch(error => console.error('Error loading CSV:', error));
+                            </script>
                             </span>
                         </p>
                         <div class="ml-auto">
