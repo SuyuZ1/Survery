@@ -165,12 +165,22 @@
               <!-- Latest Papers Section -->
                 <div class="col-lg-12 mt-5">
                     <h4>Latest Papers (Weekly Update)</h4>
-                    <p>
-                        Recently-added or newly-published VLA papers    
-                        <span id="latestUpdatedDate" style="font-weight: 600; color:#2c3e50;">
-                            (Updated on: 2025-12-15)                                 
-                        </span>
-                    </p>
+                    <div class="d-flex align-items-center mb-2 flex-wrap">
+                        <p class="mb-0 mr-3">
+                            Recently-added or newly-published VLA papers
+                            <span id="latestUpdatedDate" style="font-weight: 600; color:#2c3e50;">
+                                (Updated on: 2025-12-15)
+                            </span>
+                        </p>
+                        <div class="ml-auto">
+                            <select id="latestRangeSelect" class="form-control form-control-sm">
+                                <option value="1">Last 1 week</option>
+                                <option value="2">Last 2 weeks</option>
+                                <option value="3">Last 3 weeks</option>
+                                <option value="4" selected>Last 4 weeks</option>
+                            </select>
+                        </div>
+                    </div>
                     <div id="latestScrollWrapper" class="latest-scroll-wrapper">
                         <div id="latestScroll" class="latest-scroll"></div>
                     </div>
@@ -327,17 +337,33 @@
                 <div class="col-lg-10 offset-lg-1">
                     <h4 id="bibtex">BibTeX</h4>
                     <pre>
-@article{
-  title   = {An Anatomy of Vision-Language-Action Models: From Modules to Milestones and Challenges},
-  author  = {Xu, Chao and Zhang, Suyu and Liu, Yang and Sun, Baigui and Chen, Weihong and Xu, Bo and Liu, Qi and
-             Wang, Juncheng and Wang, Shujun and Luo, Shan and Peters, Jan and
-             Vasilakos, Athanasios V. and Zafeiriou, Stefanos and Deng, Jiankang},
-  journal = {arXiv preprint arXiv:2512.11362},
-  year    = {2025},
-}
+                        @article{xu2025anatomyVLA,
+                            title   = {An Anatomy of Vision-Language-Action Models: From Modules to Milestones and Challenges},
+                            author  = {Xu, Chao and Zhang, Suyu and Liu, Yang and Sun, Baigui and Chen, Weihong and Xu, Bo and Liu, Qi and
+                                        Wang, Juncheng and Wang, Shujun and Luo, Shan and Peters, Jan and
+                                        Vasilakos, Athanasios V. and Zafeiriou, Stefanos and Deng, Jiankang},
+                            journal = {arXiv preprint arXiv:2512.11362},
+                            year    = {2025},
+                        }
                     </pre>
                 </div>
 
+                <!-- Contact -->
+                <div class="col-lg-10 offset-lg-1"><hr class="mt-4 mb-4"></div>
+                <div class="col-lg-10 offset-lg-1 mb-5">
+                    <h4 id="contact">Contact</h4>
+                    <p>
+                        If you have any questions or suggestions, please feel free to contact us via email at
+                        <a href="mailto:zsy993115095@gmail.com" target="_blank">zsy993115095@gmail.com</a>.
+                    </p>
+                </div>
+                <!-- adapted from -->
+                 <div class="col-lg-10 offset-lg-1">
+                    <h4 id="note">Note</h4>
+                    <p>
+                        This website is adapted from the <a href="https://vla-survey.github.io/" target="_blank">VLASurvey</a>.
+                    </p>
+                </div>
             </div>
         </div>
     </div>

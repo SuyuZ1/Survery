@@ -1,5 +1,6 @@
 let allData = [];
 let filteredData = [];
+let latestAllData = [];
 let currentPage = 1;
 let recordsPerPage = 10;
 let sortColumn = null;
@@ -713,18 +714,49 @@ async function loadLatestCSV() {
 
         // Sort newest first
         data.sort((a, b) => {
-            const da = parseFlexibleDate(a["Year"]);
-            const db = parseFlexibleDate(b["Year"]);
+            const da = parseFlexibleDate(a["Upload Date"]);
+            const db = parseFlexibleDate(b["Upload Date"]);
             return (db?.getTime() || 0) - (da?.getTime() || 0);
         });
 
-        renderLatestCards(data);
-
+        latestAllData = data;
+        applyLatestRangeFilter();
+            
     } catch (err) {
         console.error("Error loading latest.csv:", err);
     }
 }
 
+// Apply latest range filter when select changes
+function applyLatestRangeFilter() {
+    const select = document.getElementById("latestRangeSelect");
+    const weeks = parseInt(select.value, 10);
+
+    if (!latestAllData.length) return;
+
+    // 1. 使用 Updated Date 作为时间轴
+    const dates = latestAllData
+        .map(r => parseFlexibleDate(r["Updated Date"]))
+        .filter(d => d);
+
+    if (!dates.length) {
+        renderLatestCards(latestAllData);
+        return;
+    }
+
+    // 2. 以“最近一次更新”为锚点
+    const maxDate = new Date(Math.max(...dates.map(d => d.getTime())));
+    const threshold = new Date(maxDate);
+    threshold.setDate(threshold.getDate() - weeks * 7);
+
+    // 3. 过滤
+    const filtered = latestAllData.filter(row => {
+        const d = parseFlexibleDate(row["Updated Date"]);
+        return d && d > threshold;
+    });
+
+    renderLatestCards(filtered);
+}
 
 // Render card layout using SAME logic as vla_data table
 function renderLatestCards(latestData) {
@@ -839,6 +871,9 @@ document.addEventListener("DOMContentLoaded", function () {
     loadLatestCSV();
 });
 
+// Apply latest range filter when select changes
+document.getElementById("latestRangeSelect")
+    ?.addEventListener("change", applyLatestRangeFilter);
 
 // Set up event listeners
 document.addEventListener('DOMContentLoaded', function() {
