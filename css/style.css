@@ -296,15 +296,34 @@ pre {
 }
 
 /* Fix table layout to maintain consistent width */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.table-responsive::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(to left, rgb(233, 237, 245), rgba(248,249,251,0));
+}
+
 #surveyTable {
-    table-layout: fixed;
-    width: 100%;
+    table-layout: auto;
+    min-width: 1200px;
 }
 
 /* Ensure table cells wrap instead of stretching */
+#surveyTable th:nth-child(1),
+#surveyTable td:nth-child(1) {
+    width: 150px;   /*  列固定宽度 */
+}
 #surveyTable th:nth-child(2),
 #surveyTable td:nth-child(2) {
-    width: 100px;   /* Year 列固定宽度 */
+    width: 120px;   /* Year 列固定宽度 */
 }
 #surveyTable td, 
 #surveyTable th {
