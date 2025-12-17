@@ -37,7 +37,7 @@ This survey follows a natural learning trajectory:
 
 We identify **five fundamental challenges**, each further decomposed into **sub-challenges**.  
 
-![](.\imgs\challenges.png)
+![image](https://github.com/SuyuZ1/Survery/blob/main/imgs/challenges.png)
 
 ---
 
