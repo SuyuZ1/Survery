@@ -6,7 +6,7 @@
 This repository accompanies the survey paper:
 
 > **An Anatomy of Vision-Language-Action Models: From Modules to Milestones and Challenges**  
-> *Chao Xu, Suyu Zhang, Yang Liu, et al.*
+> *Chao Xu, Suyu Zhang, Yang Liu, Baigui Sun, et al.*
 
 We organize the rapidly growing Vision-Language-Action (VLA) literature **around core challenges**, rather than architectures or tasks, following the structure of **Section 4** of the paper.
 
@@ -396,6 +396,5 @@ If you find this repository useful, please cite:
 
 This is a **living survey**.Contributions, corrections, and new papers are welcome.
 
-```text
-Feel free to open an issue or pull request.
-```
+Feel free to contact: zsy993115095@gmail.com
+
