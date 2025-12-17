@@ -369,9 +369,50 @@ pre {
 }
 
 .latest-section-label {
-    font-size: 13px;
-    font-weight: 600;
-    margin-top: 8px;
-    color: #2d3a48;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7a869a;
+    margin-top: 10px;
+    margin-bottom: 2px;
 }
 
+.latest-section {
+    padding: 20px 24px;
+    background: #ebeff7;
+    border-radius: 12px;
+}
+
+.latest-header {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e4e7ec;
+    margin-bottom: 16px;
+}
+
+.latest-meta {
+    font-size: 0.9rem;
+    color: #5f6c7b;
+}
+
+#latestUpdatedDate {
+    margin-left: 6px;
+    font-weight: 500;
+    /* 字体加粗 */
+    font-weight: bold;
+    color: #34495e;
+}
+
+.latest-controls select {
+    min-width: 140px;
+}
+
+.latest-empty {
+    padding: 40px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.latest-empty-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+}

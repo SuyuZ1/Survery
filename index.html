@@ -163,43 +163,33 @@
                 </div>
                 
               <!-- Latest Papers Section -->
-                <div class="col-lg-12 mt-5">
-                    <h4>Latest Papers (Weekly Update)</h4>
-                    <div class="d-flex align-items-center mb-2 flex-wrap">
-                        <p class="mb-0 mr-3">
-                            Recently-added or newly-published VLA papers
-                            <span id="latestUpdatedDate" style="font-weight: 600; color:#2c3e50;">
-                            <script>
-                                // Load latest update date from CSV
-                                fetch('data/latest.csv')
-                                    .then(response => response.text())
-                                    .then(data => {
-                                        const lines = data.trim().split('\n');
-                                        if (lines.length > 1) {
-                                            const lastRow = lines[lines.length - 1];
-                                            const columns = lastRow.split(',');
-                                            // Assuming the date is in the third column, adjust index as needed
-                                            const latestDate = columns[2].trim();
-                                            document.getElementById('latestUpdatedDate').textContent = '(Updated on: ' + latestDate + ')';
-                                        }
-                                    })
-                                    .catch(error => console.error('Error loading CSV:', error));
-                            </script>
-                            </span>
-                        </p>
-                        <div class="ml-auto">
+                <div class="latest-section mt-5">
+
+                    <div class="latest-header d-flex align-items-center flex-wrap">
+                        <div>
+                            <h4 class="mb-1">Latest Papers (Weekly Update)</h4>
+                            <div class="latest-meta">
+                                Recently-added or newly-published VLA papers
+                                <span id="latestUpdatedDate">(Updated on: —)</span>
+                            </div>
+                        </div>
+
+                        <div class="ml-auto latest-controls">
                             <select id="latestRangeSelect" class="form-control form-control-sm">
-                                <option value="1">Last 1 week</option>
-                                <option value="2" selected>Last 2 weeks</option>
-                                <option value="3">Last 3 weeks</option>
-                                <option value="4">Last 4 weeks</option>
+                                <option value="1" selected>This week</option>
+                                <option value="2">Last week</option>
+                                <option value="3">2 weeks ago</option>
+                                <option value="4">3 weeks ago</option>
                             </select>
                         </div>
                     </div>
+
                     <div id="latestScrollWrapper" class="latest-scroll-wrapper">
                         <div id="latestScroll" class="latest-scroll"></div>
                     </div>
+
                 </div>
+
 
                 <div class="col-lg-12"><hr class="mt-4 mb-4"></div>
                 <!-- Main Figure Section -->

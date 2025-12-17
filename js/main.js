@@ -70,6 +70,23 @@ function parseFlexibleDate(raw) {
     return null;
 }
 
+// Function to get the week range for a given date
+function getWeekRange(date) {
+    const d = new Date(date);
+    const day = d.getDay(); // 0 (Sun) - 6 (Sat)
+    const diffToMonday = (day === 0 ? -6 : 1) - day;
+
+    const weekStart = new Date(d);
+    weekStart.setDate(d.getDate() + diffToMonday);
+    weekStart.setHours(0, 0, 0, 0);
+
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    weekEnd.setHours(23, 59, 59, 999);
+
+    return { weekStart, weekEnd };
+}
+
 // Load CSV file
 async function loadCSV() {
     try {
@@ -720,43 +737,83 @@ async function loadLatestCSV() {
         });
 
         latestAllData = data;
-        applyLatestRangeFilter();
+        applyLatestWeekFilter();
             
     } catch (err) {
         console.error("Error loading latest.csv:", err);
     }
 }
 
-// Apply latest range filter when select changes
-function applyLatestRangeFilter() {
+// Apply latest week filter and render cards
+function applyLatestWeekFilter() {
     const select = document.getElementById("latestRangeSelect");
-    const weeks = parseInt(select.value, 10);
+    const offset = parseInt(select.value, 10) - 1; // 0 = most recent week
 
     if (!latestAllData.length) return;
 
-    // 1. 使用 Updated Date 作为时间轴
-    const dates = latestAllData
+    // 1. 找到最新的 Updated Date
+    const allDates = latestAllData
         .map(r => parseFlexibleDate(r["Updated Date"]))
-        .filter(d => d);
+        .filter(Boolean);
 
-    if (!dates.length) {
-        renderLatestCards(latestAllData);
+    if (!allDates.length) return;
+
+    const latestDate = new Date(Math.max(...allDates.map(d => d.getTime())));
+
+    // 2. 计算目标周（向前 offset 周）
+    const baseWeek = getWeekRange(latestDate);
+    const targetWeekStart = new Date(baseWeek.weekStart);
+    targetWeekStart.setDate(baseWeek.weekStart.getDate() - offset * 7);
+
+    const targetWeekEnd = new Date(targetWeekStart);
+    targetWeekEnd.setDate(targetWeekStart.getDate() + 6);
+    targetWeekEnd.setHours(23, 59, 59, 999);
+
+    // 3. 严格筛选：Updated Date ∈ 该周
+    const filtered = latestAllData.filter(row => {
+        const d = parseFlexibleDate(row["Updated Date"]);
+        return d && d >= targetWeekStart && d <= targetWeekEnd;
+    });
+
+    // 4. 更新卡片
+    renderLatestCards(filtered);
+
+    // 5. 更新 Updated on 文案（该周的最大 Updated Date）
+    updateLatestUpdatedDate(filtered, targetWeekEnd);
+}
+
+// Update "Updated on" text for latest cards
+function updateLatestUpdatedDate(dataInWeek, fallbackDate) {
+    const span = document.getElementById("latestUpdatedDate");
+    if (!span) return;
+
+    if (!dataInWeek.length) {
+        span.innerHTML = `
+        <div class="latest-empty">
+            <div class="latest-empty-title">No updates this week</div>
+            <div class="latest-empty-sub">
+                No papers were added during the selected week.
+            </div>
+        </div>
+    `;
         return;
     }
 
-    // 2. 以“最近一次更新”为锚点
-    const maxDate = new Date(Math.max(...dates.map(d => d.getTime())));
-    const threshold = new Date(maxDate);
-    threshold.setDate(threshold.getDate() - weeks * 7);
+    const dates = dataInWeek
+        .map(r => parseFlexibleDate(r["Updated Date"]))
+        .filter(Boolean);
 
-    // 3. 过滤
-    const filtered = latestAllData.filter(row => {
-        const d = parseFlexibleDate(row["Updated Date"]);
-        return d && d > threshold;
-    });
+    const maxDate = dates.length
+        ? new Date(Math.max(...dates.map(d => d.getTime())))
+        : fallbackDate;
 
-    renderLatestCards(filtered);
+    const yyyy = maxDate.getFullYear();
+    const mm = String(maxDate.getMonth() + 1).padStart(2, '0');
+    const dd = String(maxDate.getDate()).padStart(2, '0');
+
+    span.textContent = `(Updated on: ${yyyy}-${mm}-${dd})`;
 }
+
 
 // Render card layout using SAME logic as vla_data table
 function renderLatestCards(latestData) {
@@ -873,7 +930,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Apply latest range filter when select changes
 document.getElementById("latestRangeSelect")
-    ?.addEventListener("change", applyLatestRangeFilter);
+    ?.addEventListener("change", applyLatestWeekFilter);
 
 // Set up event listeners
 document.addEventListener('DOMContentLoaded', function() {
