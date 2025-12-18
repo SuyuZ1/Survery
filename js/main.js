@@ -729,10 +729,10 @@ async function loadLatestCSV() {
             };
         });
 
-        // Sort newest first
+        // Sort newest Year first
         data.sort((a, b) => {
-            const da = parseFlexibleDate(a["Upload Date"]);
-            const db = parseFlexibleDate(b["Upload Date"]);
+            const da = parseFlexibleDate(a["Year"]);
+            const db = parseFlexibleDate(b["Year"]);
             return (db?.getTime() || 0) - (da?.getTime() || 0);
         });
 
@@ -892,7 +892,7 @@ function renderLatestCards(latestData) {
             <div class="latest-title">${row["略称"]}</div>
             <div class="latest-subtitle">${row["Title"] || ""}</div>
 
-            <div class="latest-section-label mt-2">Year</div>
+            <div class="latest-section-label mt-2">Date</div>
             <div>${row["Year"] || "-"}</div>
 
             <div class="latest-section-label">Challenge</div>
