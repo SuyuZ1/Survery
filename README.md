@@ -1,5 +1,5 @@
 # An Anatomy of Vision-Language-Action Models  
-### From Modules to Milestones and Challenges 
+### From Modules to Milestones and Challenges  
 
 [![Paper](https://img.shields.io/badge/arXiv-2512.11362-b31b1b.svg)](https://arxiv.org/abs/2512.11362) [![Project Page](https://img.shields.io/badge/Project-Website-blue)](https://suyuz1.github.io/VLA-Survey-Anatomy/)
 
@@ -41,12 +41,23 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 
 ---
 
+> ⭐Starred papers are submitted by authors who contacted us. We warmly welcome submissions and encourage researchers to share their latest results.
+
 ### 1️⃣ Multi-Modal Alignment and Physical World Modeling  
+
 *(Sec. 4.1)*
 
 <details>
-<summary><strong>4.1.1 The GAP between Semantics, Perception, and Physical Interaction</strong></summary>
+<summary><strong>4.1.1 The GAP between Semantics Perception and Physical Interaction</strong></summary>
 
+- **DreamTacVLA**[2025-12-29]: Utilize Hierarchical Spatial Alignment loss to fuse multi-scale sensory streams and employ a tactile world model to predict future contact dynamics. [[paper](https://arxiv.org/pdf/2512.23864)] [[website](-)]
+- **Point-VLA**[2025-12-22]: Augments language instructions with explicit visual cues like bounding boxes to resolve referential ambiguity enabling precise object-level grounding. [[paper](https://arxiv.org/pdf/2512.18933)] [[website](-)]
+- **TwinAligner**[2025-12-22]: Uses SDF reconstruction and editable 3DGS rendering for pixel level alignment while ensuring dynamic consistency by identifying rigid physics. [[paper](https://arxiv.org/pdf/2512.19390)] [[website](https://twin-aligner.github.io)]
+- **PhysBrain**[2025-12-19]: Train an egocentric-aware embodied brain on the E2E-3M dataset to bridge vision language models with physical intelligence and enable sample-efficient VLA fine-tuning. [[paper](https://arxiv.org/pdf/2512.16793)] [[website](https://zgc-embodyai.github.io/PhysBrain/)]
+- **mimic-video**[2025-12-19]: Leverage pretrained video model latents to capture physical dynamics missing from static vision language backbones. [[paper](https://arxiv.org/pdf/2512.15692)] [[website](https://mimic-video.github.io)]
+- **DexGrasp-VLA**[2025-12-13]: Develop an Arm-Hand Feature Enhancement module to explicitly capture distinct latent features of arm and hand movements. [[paper](https://arxiv.org/pdf/2511.00139)] [[website](https://dexvla-seed.github.io/dex-vla)]
+- **InternVLA-M1⭐**[2025-10-15]: Employs a two-stage pipeline combining spatial grounding pre-training with spatially guided action post-training to bridge instructions and actions. [[paper](https://arxiv.org/pdf/2510.13778)] [[website](https://internrobotics.github.io/internvla-m1.github.io/)]
+- **WALL-OSS⭐**[2025-09-08]: Employ a tightly coupled Mixture-of-Experts architecture with static routing to align action and vision-language features. [[paper](https://arxiv.org/pdf/2509.11766)] [[website](https://x2robot.com/en/research/68bc2cde8497d7f238dde690)]
 - **ACT-LLM**[2025]: Formulates raw per- ceptual inputs into structured language representation. [[paper](https://arxiv.org/pdf/2506.21250)] [[website](https://github.com/jonyzhang2023/awesome-embodied-vla-va-vln)]
 - **Humanoid-VLA**[2025]: Pre-training language-action. [[paper](https://arxiv.org/pdf/2502.14795)] [[website](https://github.com/AllenXuuu/HumanVLA)]
 - **Orion**[2025]: Introduces a high-level VLM planner with a separate low-level motion controller. [[paper](https://arxiv.org/pdf/2503.19755)] [[website](https://xiaomi-mlab.github.io/Orion/)]
@@ -73,11 +84,16 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 </details>
 
 <details>
-<summary><strong>4.1.2 From 2D Images to Spatial-Temporal Representations</strong></summary>
+<summary><strong>4.1.2 From 2D Images to Spatial Temporal Representations</strong></summary>
 
+- **Real2Edit2Real**[2025-12-22]: Reconstruct metric scale geometry from RGB observations and use depth as a control interface for video generation. [[paper](https://arxiv.org/pdf/2512.19402)] [[website](https://real2edit2real.github.io/)]
+- **GeoPredict**[2025-12-18]: Constructs a predictive 3D Gaussian geometry module to forecast workspace geometry with track guided refinement along future keypoint trajectories. [[paper](https://arxiv.org/pdf/2512.16811)] [[website](https://jingjingqian75.github.io/GeoPredict-Page/)]
 - **HiF-VLA**[2025-12-10]: Leverage low-dimensional motion vectors for hindsight foresight and action fusion in a unified latent space. [[paper](https://arxiv.org/pdf/2512.09928)] [[website](https://hifvla.github.io)]
+- **Lumo-1**[2025-12-10]: Build a vision language action model with spatial action tokenization and structured reasoning. [[paper](https://arxiv.org/pdf/2512.08580)] [[website](https://www.astribot.com/research/Lumo1)]
 - **GLaD**[2025-12-10]: Distill geometric features from a frozen VGGT teacher into LLM hidden states for visual tokens to fuse 3D priors. [[paper](https://arxiv.org/pdf/2512.09619)] [[website](-)]
 - **VLA-4D**[2025-11-21]: Embed 3D positions and 1D time into visual features and extend actions with temporal variables for coherent manipulation. [[paper](https://arxiv.org/pdf/2511.17199)] [[website](-)]
+- **CronusVLA⭐**[2025-10-30]: Proposes a two-stage framework with single-frame pretraining and multi-frame post-training using feature chunking to aggregate temporal information. [[paper](https://arxiv.org/pdf/2506.19816)] [[website](-)]
+- **WALL-OSS⭐**[2025-09-08]: Leverage embodied VQA and discrete action priors to strengthen spatial reasoning and progress modeling. [[paper](https://arxiv.org/pdf/2509.11766)] [[website](https://x2robot.com/en/research/68bc2cde8497d7f238dde690)]
 - **RoboFlamingo-Plus**[2025]: Fuses preprocessed depth maps  with RGB features. [[paper](https://arxiv.org/pdf/2503.19510)] [[website](-)]
 - **PointVLA**[2025]: integrates point cloud inputs into pretrained VLA models to improve spatial reasoning without modifying the backbone. [[paper](https://arxiv.org/pdf/2503.07511)] [[website](https://pointvla.github.io/)]
 - **GeoVLA**[2025]: unify 2D and 3D modalities. [[paper](https://arxiv.org/pdf/2508.09071)] [[website](https://linsun449.github.io/GeoVLA)]
@@ -106,10 +122,21 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.1.3 Dynamic and Predictive World Models</strong></summary>
 
+- **SurgWorld**[2025-12-30]: Train a diffusion-based world model capable of generating photorealistic task-consistent surgical scenes using curated SATA dataset. [[paper](https://arxiv.org/pdf/2512.23162)] [[website](-)]
+- **mimic-video**[2025-12-19]: Condition a flow matching action decoder on intermediate latent representations from a frozen video backbone. [[paper](https://arxiv.org/pdf/2512.15692)] [[website](https://mimic-video.github.io)]
+- **VLA-Motion**[2025-12-19]: Uses a dual-head design to jointly learn action chunks and optical-flow-based motion images via a shared VLM backbone to enhance motion reasoning. [[paper](https://arxiv.org/pdf/2512.18007)] [[website](https://vla-motion.github.io/)]
+- **GeoPredict**[2025-12-18]: Augments a continuous action policy with predictive kinematic priors that encode motion history and predict multi step 3D keypoint trajectories. [[paper](https://arxiv.org/pdf/2512.16811)] [[website](https://jingjingqian75.github.io/GeoPredict-Page/)]
+- **ISS**[2025-12-17]: Introduces an implicit scene supervision module that predicts future point cloud features to enforce long-term geometric consistency. [[paper](https://arxiv.org/pdf/2512.15020)] [[website](-)]
+- **Motus**[2025-12-15]: Integrates video generation and action experts via Mixture-of-Transformer architecture with a UniDiffuser-style scheduler. [[paper](https://arxiv.org/pdf/2512.13030)] [[website](https://motus-robotics.github.io/motus)]
+- **DexWM**[2025-12-15]: Introduce a latent space world model conditioned on dexterous actions with an auxiliary hand consistency loss to enforce accurate hand configurations. [[paper](https://arxiv.org/pdf/2512.13644)] [[website](https://raktimgg.github.io/dexwm/)]
+- **VL-JEPA**[2025-12-11]: Predict continuous embeddings of target texts in an abstract representation space using a joint embedding predictive architecture. [[paper](https://arxiv.org/pdf/2512.10942)] [[website](-)]
+- **EToT**[2025-12-09]: Leverages a physics-based interactive digital twin as an embodied world model to enforce explicit physical laws and collision constraints during planning. [[paper](https://arxiv.org/pdf/2512.08188)] [[website](https://embodied-tree-of-thoughts.github.io/)]
+- **VideoVLA**[2025-12-07]: Jointly denoise video latents and action vectors within a unified multi-modal diffusion transformer architecture. [[paper](https://arxiv.org/pdf/2512.06963)] [[website](https://videovla-nips2025.github.io/)]
 - **HiMoE-VLA**[2025-12-05]: Train actions with flow matching to model multimodal action distributions. [[paper](https://arxiv.org/pdf/2512.05693)] [[website](https://github.com/ZhiyingDu/HiMoE-VLA)]
 - **GigaWorld-0**[2025-11-30]: Unify video generation and 3D physics-aware reconstruction to synthesize controllable embodied interaction data. [[paper](https://arxiv.org/pdf/2511.19861)] [[website](https://giga-world-0.github.io)]
 - **LatBot**[2025-11-28]: Learn instruction-guided latent actions from multi-frame videos and jointly decode future frames and inter-frame actions. [[paper](https://arxiv.org/pdf/2511.23034)] [[website](https://mm-robot.github.io/distill_latent_action)]
 - **Mantis**[2025-11-20]: Disentangle visual foresight from action learning using a diffusion transformer head with latent action queries and progressive multimodal training. [[paper](https://arxiv.org/pdf/2511.16175)] [[website](https://github.com/zhijie-group/Mantis)]
+- **AdaWorld**[2025-06-02]: Develops an autoregressive world model conditioned on latent actions extracted from videos in a self-supervised manner. [[paper](https://arxiv.org/pdf/2503.18938)] [[website](https://adaptable-world-model.github.io)]
 - **TriVLA**[2025]: Augments a video diffusion model to produce  multi-step visual rollouts. [[paper](https://arxiv.org/pdf/2507.01424)] [[website](https://robertwyq.github.io/univla.github.io/)]
 - **UP-VLA**[2025]: Leverages key subgoal image prediction to represent the next salient task state. [[paper](https://arxiv.org/pdf/2501.18867)] [[website](https://github.com/CladernyJorn/UP-VLA)]
 - **CoT-VLA**[2025]: Leverages key subgoal image prediction to represent the next salient task state. [[paper](https://arxiv.org/abs/2503.22020)] [[website](https://cot-vla.github.io/)]
@@ -144,6 +171,13 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.2.2 Hierarchical Planning and Task Decomposition</strong></summary>
 
+- **RoboMIND**[2025-12-31]: Propose a hierarchical dual-system framework MIND-2 that integrates a high-level semantic planner with a low-level Vision-Language-Action executor optimized via offline reinforcement learning. [[paper](https://arxiv.org/pdf/2512.24653)] [[website](https://modelscope.cn/organization/X-Humanoid?tab=dataset)]
+- **Lumo-1**[2025-12-10]: Train with staged reasoning action alignment and flow matched action expert for efficient execution. [[paper](https://arxiv.org/pdf/2512.08580)] [[website](https://www.astribot.com/research/Lumo1)]
+- **EToT**[2025-12-09]: Formulates task planning as a tree-structured search process expanded through Priori Branching to generate diverse candidate execution paths based on semantic analysis. [[paper](https://arxiv.org/pdf/2512.08188)] [[website](https://embodied-tree-of-thoughts.github.io/)]
+- **MM-ACT⭐**[2025-12-08]: Integrates text image and action in shared token space to perform task planning and future image prediction under shared context. [[paper](https://arxiv.org/pdf/2512.00975)] [[website](https://github.com/HHYHRHY/MM-ACT)]
+- **ManualVLA**[2025-12-01]: Design a unified Mixture-of-Transformers framework that selectively activates planning and action experts for coherent manual generation and execution. [[paper](https://arxiv.org/pdf/2512.02013)] [[website](https://sites.google.com/view/maunalvla)]
+- **MoE-DP**[2025-11-07]: Integrate a Mixture of Experts layer to decompose long-horizon tasks into specialized skills within the diffusion policy. [[paper](https://arxiv.org/pdf/2511.05007)] [[website](https://moe-dp-website.github.io/MoE-DP-Website/)]
+- **WALL-OSS⭐**[2025-09-08]: Develop Unified Cross-Level CoT to seamlessly unify instruction reasoning subgoal decomposition and fine-grained action synthesis. [[paper](https://arxiv.org/pdf/2509.11766)] [[website](https://x2robot.com/en/research/68bc2cde8497d7f238dde690)]
 - **OneTwoVLA**[2025]: leverages structured textual reasoning to generate scene descriptions high-level plans and next-step instructions. [[paper](https://arxiv.org/pdf/2505.11917)] [[website](https://one-two-vla.github.io/)]
 - **PI0.5**[2025]: embeds hierarchical reason ing within a single inference chain. [[paper](https://arxiv.org/pdf/2504.16054)] [[website](https://www.pi.website/blog/pi05)]
 - **Hi Robot**[2025]: employ a two-layer scheme where a VLM parses  instructions into atomic sub-tasks. [[paper](https://arxiv.org/pdf/2502.19417)] [[website](https://www.pi.website/research/hirobot)]
@@ -163,7 +197,11 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.2.3 Error Detection and Autonomous Recovery</strong></summary>
 
+- **CF-VLA**[2025-12-30]: Utilize a rollout-filter-label pipeline to mine failure cases and train the model for self-correction. [[paper](https://arxiv.org/pdf/2512.24426)] [[website](-)]
+- **EToT**[2025-12-09]: Utilizes Reflective Branching to diagnose execution failures within the simulator and iteratively refine the planning tree with corrective actions. [[paper](https://arxiv.org/pdf/2512.08188)] [[website](https://embodied-tree-of-thoughts.github.io/)]
+- **AFI**[2025-12-08]: Detect memory traps using proprioception and execute affordance-guided rollback for recovery. [[paper](https://arxiv.org/pdf/2512.07472)] [[website](-)]
 - **ViFailback**[2025-12-03]: Use a VLM to detect localize and classify failures then generate textual and visual corrective guidance. [[paper](https://arxiv.org/pdf/2512.02787)] [[website](https://x1nyuzhou.github.io/vifailback.github.io)]
+- **MoE-DP**[2025-11-07]: Leverage dynamic expert routing to detect failures and reactivate appropriate experts for subtask retries. [[paper](https://arxiv.org/pdf/2511.05007)] [[website](https://moe-dp-website.github.io/MoE-DP-Website/)]
 - **OneTwoVLA**[2025]: Actively queries humans to resolve uncertainty before acting. [[paper](https://arxiv.org/pdf/2505.11917)] [[website](https://one-two-vla.github.io/)]
 - **CorrectNav**[2025]: Leverages iterative self-correction by using the model's own error trajectories to generate corrective actions and data. [[paper](https://arxiv.org/pdf/2508.10416)] [[website](https://correctnav.github.io/)]
 - **FPC-VLA**[2025]: Leverages a VLM to assess action semantics and generate corrective language feedback. [[paper](https://arxiv.org/pdf/2509.04018)] [[website](https://fpcvla.github.io/)]
@@ -176,9 +214,15 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.2.4 Real-Time Execution and Computing Efficiency</strong></summary>
 
+- **VLA-RAIL**[2025-12-31]: Propose a client-server asynchronous framework with intra-chunk smoothing and inter-chunk fusion to decouple inference from control and ensure smooth continuous motion. [[paper](https://arxiv.org/pdf/2512.24673)] [[website](-)]
+- **ISS**[2025-12-17]: Uses a streamlined DiT architecture with sparse point cloud encoding to improve inference speed and training efficiency. [[paper](https://arxiv.org/pdf/2512.15020)] [[website](-)]
+- **WholeBodyVLA**[2025-12-15]: Employ a discrete command interface with two-stage curriculum RL policy for precise execution. [[paper](https://arxiv.org/pdf/2512.11047)] [[website](https://opendrivelab.com/WholeBodyVLA)]
+- **VL-JEPA**[2025-12-11]: Enable selective decoding by invoking the text decoder only when significant semantic changes are detected in the predicted embedding stream. [[paper](https://arxiv.org/pdf/2512.10942)] [[website](-)]
 - **HiF-VLA**[2025-12-10]: Use compact motion representations to expand temporal reasoning with negligible latency. [[paper](https://arxiv.org/pdf/2512.09928)] [[website](https://hifvla.github.io)]
+- **MM-ACT⭐**[2025-12-08]: Adopts a one-step parallel decoding strategy for action generation to achieve low-latency inference. [[paper](https://arxiv.org/pdf/2512.00975)] [[website](https://github.com/HHYHRHY/MM-ACT)]
 - **HiMoE-VLA**[2025-12-05]: Cache intermediate VLM key value pairs for faster inference without degrading performance. [[paper](https://arxiv.org/pdf/2512.05693)] [[website](https://github.com/ZhiyingDu/HiMoE-VLA)]
 - **DeepThinkVLA**[2025-10-31]: Use a hybrid-attention decoder with SFT then outcome-based RL to align reasoning with actions. [[paper](https://arxiv.org/pdf/2511.15669)] [[website](https://github.com/wadeKeith/DeepThinkVLA)]
+- **CronusVLA⭐**[2025-10-30]: Optimizes inference speed by predicting learnable features and using a queue mechanism for feature caching. [[paper](https://arxiv.org/pdf/2506.19816)] [[website](-)]
 - **BitVLA**[2025]: achieves ultra-low-precision efficiency  via ternary 1-bit compression and distillation. [[paper](https://arxiv.org/pdf/2506.07530)] [[website](https://github.com/ustcwhy/BitVLA)]
 - **Evo-1**[2025]: Provides a lightweight 77M-parameter design. [[paper](https://arxiv.org/pdf/2511.04555)] [[website](https://github.com/MINT-SJTU/Evo-1)]
 - **SQAP-VLA**[2025]: Introduces perceptual pruning strategies on the basis of quantization. [[paper](https://arxiv.org/pdf/2509.09090)] [[website](https://github.com/ecdine/SQAP-VLA)]
@@ -217,10 +261,24 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.3.1 Open-World Generalization</strong></summary>
 
+- **Point-VLA**[2025-12-22]: Applies grounding-aware augmentations to decouple grounding from absolute coordinates reducing overfitting and adapting to varying visual perception. [[paper](https://arxiv.org/pdf/2512.18933)] [[website](-)]
+- **Real2Edit2Real**[2025-12-22]: Synthesize spatially diverse demonstrations by bridging 3D editability with 2D visual data via a 3D control interface. [[paper](https://arxiv.org/pdf/2512.19402)] [[website](https://real2edit2real.github.io/)]
+- **Human to Robot**[2025-12-16]: Co-train human videos as an additional embodiment with robot data using unified trajectory and sub-task prediction objectives. [[paper](https://www.physicalintelligence.company/download/human_to_robot.pdf)] [[website](https://www.physicalintelligence.company/research/human_to_robot)]
+- **OXE-AugE**[2025-12-15]: Fine-tunes generalist policies on augmented data to improve zero-shot transfer to unseen embodiments. [[paper](https://arxiv.org/pdf/2512.13100)] [[website](https://OXE-AugE.github.io/)]
+- **WholeBodyVLA**[2025-12-15]: Train separate locomotion and manipulation latent action models on human videos to supervise VLA training. [[paper](https://arxiv.org/pdf/2512.11047)] [[website](https://opendrivelab.com/WholeBodyVLA)]
+- **BayesVLA**[2025-12-12]: Decompose policy into vision-action prior and language-conditioned likelihood to mitigate modality imbalance. [[paper](https://arxiv.org/pdf/2512.11218)] [[website](https://xukechun.github.io/papers/BayesVLA)]
 - **GLaD**[2025-12-10]: Pretrain on Bridge then fine tune with LoRA for robust policy generalization. [[paper](https://arxiv.org/pdf/2512.09619)] [[website](-)]
+- **AFI**[2025-12-08]: Employ 3D Spatial Affordance Fields to guide VLA behavior in out-of-distribution scenarios. [[paper](https://arxiv.org/pdf/2512.07472)] [[website](-)]
+- **VideoVLA**[2025-12-07]: Leverage pre-trained video generation models and a dual-prediction strategy to transfer physical knowledge to robotic manipulation. [[paper](https://arxiv.org/pdf/2512.06963)] [[website](https://videovla-nips2025.github.io/)]
 - **HiMoE-VLA**[2025-12-05]: Use a hierarchical mixture of experts with action space and heterogeneity balancing experts to enable cross domain transfer. [[paper](https://arxiv.org/pdf/2512.05693)] [[website](https://github.com/ZhiyingDu/HiMoE-VLA)]
 - **MergeVLA**[2025-11-24]: Introduce sparsely activated LoRA masks and cross-attention-only action experts with a training-free task router to enable mergeable multi-skill VLA policies. [[paper](https://arxiv.org/pdf/2511.18810)] [[website](https://mergevla.github.io)]
-- **X-VLA**[2025-10-11]: Learn embodiment-specific soft prompts to absorb cross-embodiment heterogeneity and enable scalable pretraining and efficient adaptation. [[paper](https://arxiv.org/pdf/2510.10274)] [[website](https://thu-air-dream.github.io/X-VLA/)]    
+- **InternVLA-M1⭐**[2025-10-15]: Utilizes synthetic co-training and spatial prompting to achieve robust performance on unseen objects and long-horizon tasks. [[paper](https://arxiv.org/pdf/2510.13778)] [[website](https://internrobotics.github.io/internvla-m1.github.io/)]
+- **X-VLA⭐**[2025-10-14]: Employs a two-step adaptation process that warms up prompts before joint policy finetuning. [[paper](https://arxiv.org/pdf/2510.10274)] [[website](https://thu-air-dream.github.io/X-VLA/)]
+- **X-VLA**[2025-10-11]: Learn embodiment-specific soft prompts to absorb cross-embodiment heterogeneity and enable scalable pretraining and efficient adaptation. [[paper](https://arxiv.org/pdf/2510.10274)] [[website](https://thu-air-dream.github.io/X-VLA/)]
+- **GENMANIP⭐**[2025-06-12]: Leverage LLM driven task oriented scene graph to synthesize diverse tasks using 10K annotated 3D object assets. [[paper](https://arxiv.org/pdf/2506.10966)] [[website](-)]
+- **AdaWorld**[2025-06-02]: Enables efficient adaptation and action transfer to novel environments by initializing the control interface with learned latent actions. [[paper](https://arxiv.org/pdf/2503.18938)] [[website](https://adaptable-world-model.github.io)]
+- **ROBOGROUND⭐**[2025-04-30]: Leverage grounding masks as effective intermediate representations to provide spatial guidance for policy networks. [[paper](https://arxiv.org/pdf/2504.21530)] [[website](https://robo-ground.github.io)]
+- **GR00T N1**[2025-03-28]: Employ a dual-system architecture integrating a vision-language backbone with a flow-matching diffusion policy for cross-embodiment control. [[paper](https://arxiv.org/pdf/2503.14734)] [[website](https://research.nvidia.com/labs/gear/gr00t-n1_6/)]
 - **DexVLA**[2025]: Pretrain diffusion action experts across morphologies with a three stage curriculum. [[paper](https://arxiv.org/pdf/2502.05855)] [[website](https://dex-vla.github.io/)]
 - **EO-1**[2025]: Pretrain a shared backbone on 1.5M EO Data. [[paper](https://arxiv.org/pdf/2508.21112)] [[website](https://github.com/eo-robotics/EO1)]
 - **TRA**[2025]: Use temporal contrastive loss to structure representation space. [[paper](https://arxiv.org/pdf/2502.05454)] [[website](https://tra-paper.github.io/)]
@@ -248,6 +306,7 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.3.2 Continual Learning and Incremental Skill Acquisition</strong></summary>
 
+- **DexGrasp-VLA**[2025-12-13]: Implement a Corrective Human-in-the-loop Teleoperation system to enable continuous policy improvement via failure recovery. [[paper](https://arxiv.org/pdf/2511.00139)] [[website](https://dexvla-seed.github.io/dex-vla)]
 - **Think Small Act Big**[2025]: Leverages new prompts or codebook entries to add skills without modifying existing components. [[paper](https://arxiv.org/pdf/2504.00420)] [[website](-)]
 - **SPECI**[2025]: Leverages new prompts or codebook entries to add skills without modifying existing components. [[paper](https://arxiv.org/pdf/2504.15561)] [[website](-)]
 - **InstructVLA**[2025]: Leverages a two-stage paradigm with a MoE to route between reasoning and action modules. [[paper](https://arxiv.org/pdf/2507.17520)] [[website](https://yangs03.github.io/InstructVLA_Home/)]
@@ -259,8 +318,12 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.3.3 Sim-to-Real Gap in Deployment</strong></summary>
 
+- **TwinAligner**[2025-12-22]: Enables policies trained in simulation to achieve strong zero shot generalization to the real world by addressing both visual and dynamic gaps. [[paper](https://arxiv.org/pdf/2512.19390)] [[website](https://twin-aligner.github.io)]
+- **MiVLA**[2025-12-17]: Utilizes kinematic rules with left/right hand coordinate systems for bidirectional alignment between human and robot action spaces. [[paper](https://arxiv.org/pdf/2512.15411)] [[website](-)]
+- **DexWM**[2025-12-15]: Pre-train on human and robot datasets followed by fine-tuning on exploratory simulation data to enable zero-shot transfer to real robots. [[paper](https://arxiv.org/pdf/2512.13644)] [[website](https://raktimgg.github.io/dexwm/)]
 - **RoboWheel**[2025-12-02]: Uses a simulation-augmented data flywheel with domain randomization in Isaac Sim to enrich trajectory distributions for robust real-world transfer. [[paper](https://arxiv.org/pdf/2512.02729)] [[website](https://zhangyuhong01.github.io/Robowheel)]
-- **DiG-Flow**[2025-12-1]: Compute a distributional discrepancy between observation and action embeddings to guide residual feature updates for robust flow matching. [[paper](https://arxiv.org/pdf/2512.01715)] [[website](https://beingbeyond.github.io/DiG-Flow)] 
+- **DiG-Flow**[2025-12-1]: Compute a distributional discrepancy between observation and action embeddings to guide residual feature updates for robust flow matching. [[paper](https://arxiv.org/pdf/2512.01715)] [[website](https://beingbeyond.github.io/DiG-Flow)]
+- **ManualVLA**[2025-12-01]: Construct a high-fidelity digital twin toolkit using 3D Gaussian Splatting to synthesize large-scale training data. [[paper](https://arxiv.org/pdf/2512.02013)] [[website](https://sites.google.com/view/maunalvla)]
 - **SLIM**[2025]: Compress RGB into segmentation and depth maps. [[paper](https://arxiv.org/pdf/2410.09615)] [[website](https://github.com/Paramathic/slim)]
 - **DreamGen**[2025]: Train a world model on massive real world data. [[paper](https://arxiv.org/pdf/2505.12705)] [[website](https://github.com/nvidia/GR00T-dreams)]
 - **RynnVLA-001**[2025]: Pretrain large scale video generation with human centric trajectory modeling. [[paper](https://arxiv.org/pdf/2509.15212)] [[website](https://github.com/alibaba-damo-academy/RynnVLA-001)]
@@ -272,6 +335,8 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.3.4 Online Interaction and Reinforcement Learning</strong></summary>
 
+- **EVOLVE-VLA**[2025-12-16]: Introduce accumulative progress estimation mechanism and progressive horizon extension strategy to tame noisy reward signals for test-time training. [[paper](https://arxiv.org/pdf/2512.14666)] [[website](https://showlab.github.io/EVOLVE-VLA)]
+- **Lumo-1**[2025-12-10]: Leverage cross embodiment co training and RL to improve generalization. [[paper](https://arxiv.org/pdf/2512.08580)] [[website](https://www.astribot.com/research/Lumo1)]
 - **ProphRL**[2025-11-25]: Pretrain a unified action-conditioned world model (Prophet) on diverse robot data. [[paper](https://arxiv.org/pdf/2511.20633)] [[website](https://LogosRoboticsGroup.github.io/ProphRL)]
 - **Refined Policy Distillation**[2025]: Add MSE constraint to guide RL agent. [[paper](https://arxiv.org/pdf/2503.05833)] [[website](https://refined-policy-distillation.github.io/)]
 - **iRe-VLA**[2025]: Freeze backbone and train lightweight action head in alternating phases. [[paper](https://arxiv.org/pdf/2501.16664)] [[website](https://github.com/HaochenZ11/IRef-VLA)]
@@ -296,6 +361,8 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.4.1 Reliability and Safety Assurance</strong></summary>
 
+- **CF-VLA**[2025-12-30]: Condition counterfactual reasoning on meta-actions to simulate outcomes and revise unsafe plans before execution. [[paper](https://arxiv.org/pdf/2512.24426)] [[website](-)]
+- **VLSA-AEGIS**[2025-12-09]: Introduce a plug-and-play safety constraint layer formulated via control barrier functions into VLA models. [[paper](https://arxiv.org/pdf/2512.11891)] [[website](https://vlsa-aegis.github.io/)]
 - **AutoRT**[2025]: Leverages structured prompting to encode multi level constraints. [[paper](https://arxiv.org/pdf/2401.12963)] [[website](https://auto-rt.github.io/)]
 - **SafeVLA**[2025]: Leverages a cost function in a constrained MDP to model physically hazardous behaviors. [[paper](https://arxiv.org/pdf/2503.03480)] [[website](https://pku-safevla.github.io/)]
 - **Genimi Robotics**[2025]: Leverages Constitutional AI post-training on safety data to enforce human-centric principles. [[paper](https://arxiv.org/pdf/2503.20020)] [[website](https://github.com/google-deepmind/gemini-robotics-sdk)]
@@ -307,7 +374,9 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.4.2 Interpretability and Trustworthy Interaction</strong></summary>
 
+- **Lumo-1**[2025-12-10]: Provide explicit reasoning traces for transparent decisions. [[paper](https://arxiv.org/pdf/2512.08580)] [[website](https://www.astribot.com/research/Lumo1)]
 - **ViFailback**[2025-12-03]: Use explicit on-frame visual symbols to provide interpretable corrective cues. [[paper](https://arxiv.org/pdf/2512.02787)] [[website](https://x1nyuzhou.github.io/vifailback.github.io)]
+- **MoE-DP**[2025-11-07]: Apply auxiliary load balancing and entropy losses to enforce distinct mappings between experts and semantic task phases. [[paper](https://arxiv.org/pdf/2511.05007)] [[website](https://moe-dp-website.github.io/MoE-DP-Website/)]
 - **CoT-VLA**[2025]: Adds visual subgoal images to render intermediate plans observable. [[paper](https://arxiv.org/pdf/2503.22020)] [[website](https://cot-vla.github.io/)]
 - **CrayonRobo**[2025]: Uses structured semantically explicit visual prompts to externalize decision logic into a shared and interpretable language. [[paper](https://arxiv.org/pdf/2505.02166)] [[website](-)]
 - **SwitchVLA**[2025]: Use structured task switching with rollback of conflicting actions. [[paper](https://arxiv.org/pdf/2506.03574)] [[website](https://switchvla.github.io/)]
@@ -328,7 +397,19 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 <details>
 <summary><strong>4.5.1 Multi-Source Heterogeneous Data</strong></summary>
 
+- **RoboMIND**[2025-12-31]: Construct a large-scale bimanual mobile manipulation dataset comprising over 300K trajectories collected from six heterogeneous robot embodiments with tactile sensing and digital twins. [[paper](https://arxiv.org/pdf/2512.24653)] [[website](https://modelscope.cn/organization/X-Humanoid?tab=dataset)]
+- **SurgWorld**[2025-12-30]: Curate SATA dataset with expert-labeled surgical video clips covering core surgery actions with detailed spatial interaction. [[paper](https://arxiv.org/pdf/2512.23162)] [[website](-)]
+- **DreamTacVLA**[2025-12-29]: Construct a hybrid large-scale dataset sourced from both high-fidelity digital twin and real-world experiments to mitigate tactile data scarcity. [[paper](https://arxiv.org/pdf/2512.23864)] [[website](-)]
+- **PhysBrain**[2025-12-19]: Transform first-person videos into multi-level schema-driven VQA supervision with enforced evidence grounding and temporal consistency to construct the E2E-3M dataset. [[paper](https://arxiv.org/pdf/2512.16793)] [[website](https://zgc-embodyai.github.io/PhysBrain/)]
+- **Motus**[2025-12-15]: Introduces latent actions derived from optical flow to unify large-scale heterogeneous data across embodiments. [[paper](https://arxiv.org/pdf/2512.13030)] [[website](https://motus-robotics.github.io/motus)]
+- **OXE-AugE**[2025-12-15]: Augments existing datasets with diverse robot embodiments using a scalable pipeline combining simulation rendering and learned masks. [[paper](https://arxiv.org/pdf/2512.13100)] [[website](https://OXE-AugE.github.io/)]
+- **DexGrasp-VLA**[2025-12-13]: Propose a Shared Autonomy framework that partitions control along macro-micro motion domains for efficient data collection. [[paper](https://arxiv.org/pdf/2511.00139)] [[website](https://dexvla-seed.github.io/dex-vla)]
+- **Lumo-1**[2025-12-10]: Curate large scale multi source VLM and robot data and define evaluation suites. [[paper](https://arxiv.org/pdf/2512.08580)] [[website](https://www.astribot.com/research/Lumo1)]
 - **RoboWheel**[2025-12-02]: Converts human hand-object interaction videos from diverse sources into training-ready supervision via a physics-aware reconstruction pipeline. [[paper](https://arxiv.org/pdf/2512.02729)] [[website](https://zhangyuhong01.github.io/Robowheel)]
+- **InternVLA-M1⭐**[2025-10-15]: Builds a scalable simulation engine to generate large-scale diverse manipulation episodes and spatial grounding annotations. [[paper](https://arxiv.org/pdf/2510.13778)] [[website](https://internrobotics.github.io/internvla-m1.github.io/)]
+- **X-VLA⭐**[2025-10-14]: Introduces distinct learnable soft prompt embeddings for each data source to absorb embodiment-specific variations. [[paper](https://arxiv.org/pdf/2510.10274)] [[website](https://thu-air-dream.github.io/X-VLA/)]
+- **WALL-OSS⭐**[2025-09-08]: Aggregate over 10000 hours of data from self-collected robot trajectories open-source datasets and multimodal VQA with unified specifications. [[paper](https://arxiv.org/pdf/2509.11766)] [[website](https://x2robot.com/en/research/68bc2cde8497d7f238dde690)]
+- **GR00T N1**[2025-03-28]: Structure training corpora as a data pyramid unifying human videos synthetic data and real robot trajectories using latent and pseudo actions. [[paper](https://arxiv.org/pdf/2503.14734)] [[website](https://research.nvidia.com/labs/gear/gr00t-n1_6/)]
 - **Moto**[2025]: Uses unsupervised or self-supervised learning to acquire task-centric latent action representations from videos. [[paper](https://arxiv.org/pdf/2401.03306)] [[website](https://github.com/linhlpv/awesome-offline-to-online-RL-papers)]
 - **UniVLA**[2025]: Uses unsupervised or self-supervised learning to acquire task-centric latent action representations from videos. [[paper](https://arxiv.org/pdf/2505.06111)] [[website](https://github.com/OpenDriveLab/UniVLA)]
 - **AgiBot**[2025]: Map diverse robot actions into unified physical or latent semantic vectors. [[paper](https://arxiv.org/pdf/2503.06669)] [[website](https://opendrivelab.com/AgiBot-World/)]
@@ -351,16 +432,20 @@ We identify **five fundamental challenges**, each further decomposed into **sub-
 - **OXE**[2023]: Aggregate multiple datasets into a single benchmark. [[paper](https://arxiv.org/pdf/2310.08864)] [[website](https://robotics-transformer-x.github.io/)]
 - **RT-1**[2022]: Use unified tokenization semantic alignment or self supervised learning for VLA grounding. [[paper](https://arxiv.org/pdf/2212.06817)] [[website](https://robotics-transformer1.github.io/)]
 - **CACTI**[2022]: augment robot data via inpainting or restyling. [[paper](https://arxiv.org/pdf/2212.05711)] [[website](https://cacti-framework.github.io/)]
-- **Ego4D**[2022]: teaching robots to operate in human environments. [[paper](https://openaccess.thecvf.com/content/CVPR2022/papers/Grauman_Ego4D_Around_the_World_in_3000_Hours_of_Egocentric_Video_CVPR_2022_paper.pdf)] [[website](https://ego4d-data.org/)]       
+- **Ego4D**[2022]: teaching robots to operate in human environments. [[paper](https://openaccess.thecvf.com/content/CVPR2022/papers/Grauman_Ego4D_Around_the_World_in_3000_Hours_of_Egocentric_Video_CVPR_2022_paper.pdf)] [[website](https://ego4d-data.org/)]
 - **EPIC-KITCHENS**[2020]: teaching robots to operate in human environments. [[paper](https://arxiv.org/pdf/2005.00343)] [[website](https://epic-kitchens.github.io/2025)]
 
 </details>
 
 <details>
-<summary><strong>4.5.2 Evaluation Benchmarks</strong></summary>
+<summary><strong>4.5.2 Evaluation and Benchmark</strong></summary>
 
+- **PolaRiS**[2025-12-18]: Utilizes neural reconstruction methods to turn video scans into interactive simulation environments and develops a co-training recipe to bridge real-to-sim gaps. [[paper](https://arxiv.org/pdf/2512.16881)] [[website](https://polaris-evals.github.io)]
+- **VLSA-AEGIS**[2025-12-09]: Construct a comprehensive safety-critical benchmark SafeLIBERO spanning distinct manipulation scenarios with varying complexities. [[paper](https://arxiv.org/pdf/2512.11891)] [[website](https://vlsa-aegis.github.io/)]
 - **ViFailback**[2025-12-03]: Build a large real-world failure VQA dataset and benchmark for diagnosis and correction. [[paper](https://arxiv.org/pdf/2512.02787)] [[website](https://x1nyuzhou.github.io/vifailback.github.io)]
 - **RAGNet**[2025-7-31]: construct a large-scale reasoning-based affordance segmentation dataset and propose AffordanceNet for open-world grasping. [[paper](https://arxiv.org/pdf/2507.23734)] [[website](https://github.com/Dexmal-AI/RAGNet)]
+- **GENMANIP⭐**[2025-06-12]: Introduce a realistic tabletop simulation platform tailored for policy generalization studies with 200 human curated scenarios. [[paper](https://arxiv.org/pdf/2506.10966)] [[website](-)]
+- **ROBOGROUND⭐**[2025-04-30]: Design an automated pipeline to generate simulated manipulation data with diverse objects and instructions. [[paper](https://arxiv.org/pdf/2504.21530)] [[website](https://robo-ground.github.io)]
 - **RLBench**[2025]: -. [[paper](https://arxiv.org/pdf/1909.12271)] [[website](https://github.com/stepjam/RLBench)]
 - **EUQ**[2025]: Uses a human-assessed multidimensional scoring system to capture process quality beyond binary success. [[paper](https://arxiv.org/pdf/2502.13105v2)] [[website](-)]
 - **From Intention to Execution**[2025]: Uses intention-execution gap probing to cover object diversity linguistic complexity and visual-language reasoning. [[paper](https://arxiv.org/pdf/2506.09930)] [[website](https://ai4ce.github.io/INT-ACT/)]
