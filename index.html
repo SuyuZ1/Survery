@@ -150,7 +150,7 @@
 
                     <!-- Paper Download Buttons -->
                     <div class="mt-4 mb-5 text-center d-flex justify-content-center">
-                        <a href="https://github.com/SuyuZ1/Survery" target="_blank" class="arxiv-button">
+                        <a href="https://github.com/SuyuZ1/VLA-Survey-Anatomy" target="_blank" class="arxiv-button">
                             <i class="bi bi-github"></i>
                             GitHub
                         </a>
@@ -177,6 +177,14 @@
                             <div class="latest-meta">
                                 Recently-added or newly-published VLA papers
                                 <span id="latestUpdatedDate">(Updated on: —)</span>
+                                <div class="mt-1" style="font-size: 0.85em; color: #666;">
+                                    ⭐Starred papers are submitted by authors who contacted us. We warmly welcome submissions and encourage researchers to share their latest results.
+                                </div>
+                                <div class="mt-2">
+                                     <a href="#interactive-table-section" class="btn btn-sm btn-light border" style="border-radius: 4px; color: #555; font-weight: 500;">
+                                        See Interactive Survey Table &raquo;
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -190,16 +198,10 @@
                         </div>
                     </div>
 
-                    <div id="latestScrollWrapper" class="latest-scroll-wrapper">
-                        <div id="latestScroll" class="latest-scroll"></div>
-                    </div>
-                    
-                    <p class="text-muted" style="font-size: 1rem;">
-                        <br>
-                        ⭐ Papers marked with a star are <b>outstanding works contributed by the community</b>.
-                        We warmly welcome submissions and encourage researchers to share their latest results.
-                    </p>
-                </div>
+                            <div id="latestScrollWrapper" class="latest-scroll-wrapper">
+                                <div id="latestScroll" class="latest-scroll"></div>
+                            </div>
+                        </div>
 
 
                 <div class="col-lg-12"><hr class="mt-4 mb-4"></div>
@@ -211,6 +213,30 @@
                             <figure class="timeline-figure text-center">
                                 <img src="imgs/challenges.png?v=1" class="timeline-image" alt="Overview of VLA challenges and structure" onerror="this.src='https://via.placeholder.com/1200x400?text=Challenges+Figure+Placeholder'">
                                 <figcaption class="timeline-caption">Taxonomy of VLA challenges.</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Overview Section -->
+                <div class="row mt-5">
+                    <div class="col-lg-12">
+                        <h4 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">
+                            Video
+                        </h4>
+                        <div class="timeline-container">
+                            <figure class="timeline-figure text-center">
+                                <video
+                                    class="timeline-image"
+                                    controls
+                                    preload="metadata"
+                                >
+                                    <source src="https://github.com/SuyuZ1/VLA-Survey-Anatomy/releases/download/assets-v1/myVideo.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <figcaption class="timeline-caption">
+                                    A visual overview of Vision-Language-Action models and representative scenarios.
+                                </figcaption>
                             </figure>
                         </div>
                     </div>
@@ -243,13 +269,12 @@
 
                 <!-- Interactive Table Section -->
                 <div class="col-lg-12"><hr class="mt-4 mb-4"></div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" id="interactive-table-section">
                     <h4>Interactive Survey Table</h4>
                     <p class="text-muted" style="font-size: 0.9rem;">
                         Explore the curated list of VLA works. Use the filters below to focus on specific challenges,
                         solution strategies, or evaluation settings. Click on sortable headers to re-order the rows.
-                        <br>⭐ Papers marked with a star are <b>outstanding works contributed by the community</b>.
-                        We warmly welcome submissions and encourage researchers to share their latest results.
+                        <br>⭐Starred papers are submitted by authors who contacted us. We warmly welcome submissions and encourage researchers to share their latest results.
                     </p>
 
                     <div class="filters mt-4">
@@ -370,20 +395,17 @@
                 <!-- Contact and Note Section -->
                 <div class="col-lg-10 offset-lg-1 mb-5">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-10">
                             <h4 id="contact">Contact</h4>
                             <p>
                                 If you have any questions or suggestions, please feel free to contact us via email at
                                 <a href="mailto:zsy993115095@gmail.com" target="_blank">Email Address</a>.
-                                <br><br><br><br>
+                                <br>
                             </p>
                             <h4 id="note">Note</h4>
                             <p>
                                 This website is adapted from the <a href="https://vla-survey.github.io/" target="_blank">Vision-Language-Action Models for Robotics:A Review Towards Real-World Applications Website</a>.
                             </p>
-                        </div>
-                        <div class="col-lg-6">
-                            <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=kcWR4QO3i1ZOsyDlcAxjAn663uhlwrpJzcKyx6tnCUY&cl=ffffff&w=a"></script>
                         </div>
                     </div>
                 </div>
